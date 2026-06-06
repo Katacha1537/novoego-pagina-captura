@@ -1,0 +1,28 @@
+<!-- @dsCard group="Components" viewport="700x240" name="Stats & Checklist" subtitle="Proof figures + gold-tick deliverables" -->
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;background:var(--ink-900);font-family:var(--font-sans);padding:28px 24px;}
+  .stats{display:flex;gap:0;margin-bottom:28px;}
+  .stat{flex:1;padding:0 24px;border-left:1px solid var(--border);}
+  .stat:first-child{padding-left:0;border-left:none;}
+  .num{font-family:var(--font-statement);font-weight:600;font-size:46px;line-height:1;letter-spacing:-.01em;color:var(--text);}
+  .num.gilt{background:var(--gradient-gold-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .slab{font-size:14px;color:var(--text-muted);margin-top:6px;}
+  ul{display:grid;grid-template-columns:1fr 1fr;gap:12px 32px;margin:0;padding:0;}
+  li{display:flex;gap:12px;align-items:flex-start;list-style:none;}
+  .tick{flex:none;width:20px;height:20px;border-radius:50%;border:1px solid var(--border-accent);background:rgba(201,168,106,.08);display:flex;align-items:center;justify-content:center;color:var(--accent-bright);font-size:11px;}
+  .it{font-size:14px;color:var(--text-soft);line-height:1.5;}
+</style></head>
+<body>
+  <div class="stats">
+    <div class="stat"><div class="num gilt">5.000+</div><div class="slab">Alunos formados</div></div>
+    <div class="stat"><div class="num">7+</div><div class="slab">Anos de experiência</div></div>
+    <div class="stat"><div class="num">1.200+</div><div class="slab">Supervisões clínicas</div></div>
+  </div>
+  <ul>
+    <li><span class="tick">✓</span><span class="it">Formação estruturada e progressiva</span></li>
+    <li><span class="tick">✓</span><span class="it">Supervisão clínica individual</span></li>
+    <li><span class="tick">✓</span><span class="it">Base teórica sem superficialidade</span></li>
+    <li><span class="tick">✓</span><span class="it">Mentalidade de alta performance</span></li>
+  </ul>
+</body></html>

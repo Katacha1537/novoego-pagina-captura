@@ -1,0 +1,16 @@
+<!-- @dsCard group="Spacing" viewport="700x180" name="Elevation" subtitle="Hairline + soft shadow + top bevel = depth on dark" -->
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;background:var(--ink-900);font-family:var(--font-sans);padding:28px 24px;display:flex;gap:22px;align-items:center;}
+  .card{flex:1;height:96px;border-radius:var(--radius-lg);background:var(--ink-800);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:var(--text-muted);}
+  .sm{box-shadow:var(--shadow-sm)}
+  .card2{box-shadow:var(--elev-card)}
+  .lg{box-shadow:var(--bevel-top),var(--shadow-lg)}
+  .glow{border-color:var(--border-accent);box-shadow:var(--glow-gold)}
+</style></head>
+<body>
+  <div class="card sm">shadow-sm</div>
+  <div class="card card2">elev-card</div>
+  <div class="card lg">shadow-lg</div>
+  <div class="card glow">glow-gold</div>
+</body></html>

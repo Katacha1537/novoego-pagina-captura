@@ -1,0 +1,65 @@
+/* ============================================================
+   Novo Ego — Color tokens
+   Warm near-black neutrals + a single champagne/gold accent.
+   Dark is the unconscious & the consulting room; gold is the
+   self emerging into light (value, authority, transformation).
+   All neutrals carry a faint warm hue (~70) — never cold gray.
+   ============================================================ */
+
+:root {
+  /* — Warm ink scale (backgrounds → borders) — */
+  --ink-950: #0A0908;   /* oklch(.12 .005 70)  deepest void / full-bleed bg */
+  --ink-900: #100E0C;   /* oklch(.15 .005 70)  base background              */
+  --ink-850: #16120F;   /* oklch(.18 .006 65)  alt section background       */
+  --ink-800: #1C1714;   /* oklch(.21 .007 65)  surface / card              */
+  --ink-700: #261F1A;   /* oklch(.25 .008 65)  raised surface / hover      */
+  --ink-600: #322A23;   /* oklch(.30 .009 65)  strong border / chip        */
+
+  /* — Hairlines (use over any dark surface) — */
+  --line:        rgba(244, 239, 231, 0.08);  /* default hairline           */
+  --line-soft:   rgba(244, 239, 231, 0.05);  /* whisper divider            */
+  --line-gold:   rgba(201, 168, 106, 0.28);  /* accented border            */
+
+  /* — Warm off-white text scale — */
+  --sand-50:  #F4EFE7;  /* primary text (never pure #fff)                  */
+  --sand-200: #D6CCBD;  /* secondary text                                  */
+  --sand-400: #A39A8C;  /* muted text / supporting copy                    */
+  --sand-600: #6C645A;  /* dim text / captions / disabled                  */
+
+  /* — Champagne gold (the only chromatic accent) — */
+  --gold-100: #F1DEB7;  /* light champagne highlight                       */
+  --gold-300: #E2C385;  /* champagne — bright accent / hovers              */
+  --gold-500: #C9A86A;  /* CORE GOLD — primary accent                      */
+  --gold-700: #A8854B;  /* deep bronze — gradient end / pressed            */
+  --gold-900: #6E5630;  /* shadow bronze — emboss / deep gradient          */
+
+  /* The signature metallic sweep. Use on key CTAs & gilt text. */
+  --gradient-gold: linear-gradient(135deg, #F1DEB7 0%, #D9BB7E 38%, #C9A86A 62%, #9C7A43 100%);
+  --gradient-gold-text: linear-gradient(100deg, #F1DEB7 0%, #C9A86A 50%, #E2C385 100%);
+  /* Atmospheric warm vignette for hero backdrops over --ink-950 */
+  --gradient-aura: radial-gradient(120% 90% at 50% 0%, rgba(201,168,106,0.10) 0%, rgba(201,168,106,0.02) 35%, transparent 70%);
+
+  /* ---------- Semantic aliases (use these in product) ---------- */
+  --bg:            var(--ink-900);
+  --bg-deep:       var(--ink-950);
+  --surface:       var(--ink-800);
+  --surface-raised:var(--ink-700);
+  --chip:          var(--ink-600);
+
+  --text:          var(--sand-50);
+  --text-muted:    var(--sand-400);
+  --text-soft:     var(--sand-200);
+  --text-dim:      var(--sand-600);
+
+  --accent:        var(--gold-500);
+  --accent-bright: var(--gold-300);
+  --accent-deep:   var(--gold-700);
+
+  --border:        var(--line);
+  --border-soft:   var(--line-soft);
+  --border-accent: var(--line-gold);
+
+  /* Functional feedback (kept desaturated to fit the warm palette) */
+  --positive: #8FA876;  /* muted sage — confirmations / check ticks        */
+  --danger:   #C96A5A;  /* muted terracotta — errors                       */
+}

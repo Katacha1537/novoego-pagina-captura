@@ -1,0 +1,32 @@
+<!-- @dsCard group="Components" viewport="700x300" name="Buttons, Pills & Cards" subtitle="Gilt CTA hierarchy, eyebrow capsules, dark surfaces" -->
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;background:var(--ink-900);font-family:var(--font-sans);padding:28px 24px;}
+  .group{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:22px;}
+  .lbl{font-family:var(--font-mono);font-size:10px;color:var(--text-dim);width:100%;margin-bottom:2px;letter-spacing:.04em;}
+  .btn{display:inline-flex;align-items:center;gap:.6em;padding:14px 28px;font-family:var(--font-sans);font-size:.8125rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;border-radius:var(--radius-pill);border:1px solid transparent;cursor:pointer;}
+  .primary{background:var(--gradient-gold);color:#2A1F0C;box-shadow:var(--glow-gold);}
+  .secondary{background:transparent;color:var(--accent-bright);border-color:var(--border-accent);}
+  .ghost{background:transparent;color:var(--text-soft);text-transform:none;letter-spacing:.01em;font-weight:600;}
+  .pill{display:inline-flex;align-items:center;gap:.55em;padding:8px 16px;border-radius:var(--radius-pill);border:1px solid var(--border);font-size:var(--text-eyebrow);font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--text-soft);}
+  .pill .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);}
+  .pill.gold{border-color:var(--border-accent);background:rgba(201,168,106,.06);color:var(--accent-bright);}
+  .card{background:var(--surface);border:1px solid var(--border);box-shadow:var(--elev-card);border-radius:var(--radius-lg);padding:20px;flex:1;min-width:200px;}
+  .card h4{font-family:var(--font-editorial);font-weight:600;font-size:20px;margin:0 0 6px;color:var(--text);}
+  .card p{font-size:13px;color:var(--text-muted);margin:0;line-height:1.5;}
+</style></head>
+<body>
+  <div class="group"><span class="lbl">Button — primary / secondary / ghost</span>
+    <button class="btn primary">Agende sua consulta</button>
+    <button class="btn secondary">Conheça os procedimentos</button>
+    <button class="btn ghost">Saiba mais →</button>
+  </div>
+  <div class="group"><span class="lbl">Pill — eyebrow capsule</span>
+    <span class="pill gold"><span class="dot"></span>A Nova Ciência da Mente</span>
+    <span class="pill"><span class="dot"></span>Entregáveis</span>
+  </div>
+  <div class="group"><span class="lbl">Card — default / feature</span>
+    <div class="card"><h4>Supervisão Clínica</h4><p>Da base teórica à prática real, com acompanhamento individual.</p></div>
+    <div class="card" style="border-radius:var(--radius-xl)"><h4>Páginas Persuasivas</h4><p>Design + copywriting de alta conversão.</p></div>
+  </div>
+</body></html>

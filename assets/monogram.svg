@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="Novo Ego monograma">
+  <defs>
+    <linearGradient id="ne-gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F1DEB7"></stop>
+      <stop offset="0.5" stop-color="#C9A86A"></stop>
+      <stop offset="1" stop-color="#9C7A43"></stop>
+    </linearGradient>
+    
+  </defs>
+  
+  <circle cx="60" cy="60" r="56" fill="none" stroke="url(#ne-gold)" stroke-width="1.4"></circle>
+  
+  <circle cx="60" cy="60" r="49" fill="none" stroke="#C9A86A" stroke-opacity="0.35" stroke-width="0.8"></circle>
+  
+  <rect x="56.5" y="2.5" width="7" height="7" transform="rotate(45 60 6)" fill="url(#ne-gold)"></rect>
+  
+  <line x1="4" y1="60" x2="11" y2="60" stroke="#C9A86A" stroke-width="1.2"></line>
+  <line x1="109" y1="60" x2="116" y2="60" stroke="#C9A86A" stroke-width="1.2"></line>
+  
+  <text class="mono-letter" x="60" y="60" text-anchor="middle" dominant-baseline="central" font-size="46" fill="url(#ne-gold)">Ne</text>
+</svg>
