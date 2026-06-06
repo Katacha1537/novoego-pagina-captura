@@ -1,353 +1,981 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Novo Ego — Aula Gratuita: Dependência Emocional</title>
-<link rel="icon" href="assets/monogram.svg">
-<link rel="stylesheet" href="styles.css">
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-<style>
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{margin:0;background:var(--bg-deep);color:var(--text);font-family:var(--font-sans);line-height:var(--leading-body);-webkit-font-smoothing:antialiased;}
-  ::selection{background:rgba(201,168,106,.28);color:var(--sand-50);}
-  .wrap{max-width:var(--container);margin:0 auto;padding:0 var(--gutter);}
-  .narrow{max-width:760px;margin-inline:auto;}
-  a{color:inherit;}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Novo Ego — Aula Gratuita: Dependência Emocional</title>
+  <link rel="icon" href="assets/monogram.svg">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-  /* pill */
-  .pill{display:inline-flex;align-items:center;gap:.6em;padding:8px 16px;border-radius:var(--radius-pill);
-    border:1px solid var(--border-accent);background:rgba(201,168,106,.06);
-    font-size:var(--text-eyebrow);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-bright);width:max-content;max-width:100%;}
-  .pill svg{width:14px;height:14px;color:var(--accent);flex:none;}
-  .eyebrow{font-size:var(--text-eyebrow);font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);}
+    html {
+      scroll-behavior: smooth;
+    }
 
-  /* buttons */
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;padding:16px 30px;font-family:var(--font-sans);
-    font-size:.8125rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border-radius:var(--radius-pill);
-    border:1px solid transparent;cursor:pointer;text-decoration:none;line-height:1;
-    transition:transform var(--dur-fast) var(--ease-out),background var(--dur-base) var(--ease-out),border-color var(--dur-base) var(--ease-out),color var(--dur-base) var(--ease-out);}
-  .btn svg{width:16px;height:16px;}
-  .btn.primary{background:var(--gradient-gold);color:#2A1F0C;box-shadow:var(--glow-gold);}
-  .btn.primary:hover{transform:translateY(-1px);}
-  .btn.full{width:100%;}
-  .btn.lg{padding:18px 36px;font-size:.875rem;}
-  .btn.ghost{background:transparent;color:var(--text-soft);text-transform:none;letter-spacing:.01em;font-weight:600;border:none;padding:8px;}
-  .btn.ghost:hover{color:var(--accent-bright);}
+    body {
+      margin: 0;
+      background: var(--bg-deep);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: var(--leading-body);
+      -webkit-font-smoothing: antialiased;
+    }
 
-  /* ====== top bar ====== */
-  .topbar{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;padding:22px 0;}
-  .brand{display:flex;align-items:center;gap:12px;}
-  .brand img{width:40px;height:40px;}
-  .brand .nm{font-family:var(--font-statement);font-weight:500;letter-spacing:.14em;font-size:18px;text-transform:uppercase;color:var(--text);}
-  .topbar .when{font-family:var(--font-mono);font-size:12px;color:var(--text-muted);letter-spacing:.03em;}
+    ::selection {
+      background: rgba(201, 168, 106, .28);
+      color: var(--sand-50);
+    }
 
-  /* ====== hero ====== */
-  .hero{position:relative;border-bottom:1px solid var(--border-soft);overflow:hidden;}
-  .hero::before{content:"";position:absolute;inset:0;background:var(--gradient-aura);pointer-events:none;}
-  .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr 0.85fr;gap:var(--space-8);align-items:center;
-    padding:clamp(2.5rem,6vw,5rem) 0 clamp(3.5rem,8vw,6rem);}
-  .hero-copy{display:flex;flex-direction:column;gap:var(--space-6);}
-  #headline{font-family:var(--font-editorial);font-weight:600;font-size:clamp(2rem,3vw,2.8rem);line-height:1.24;letter-spacing:-.005em;margin:0;color:var(--text);text-wrap:pretty;}
-  #headline em{font-style:italic;color:var(--accent-bright);font-weight:600;}
-  #subheadline{font-size:var(--text-lead);color:var(--text-muted);margin:0;max-width:54ch;text-wrap:pretty;}
-  .hero-proof{display:flex;gap:24px;flex-wrap:wrap;margin-top:4px;}
-  .hero-proof div{display:flex;align-items:center;gap:9px;font-size:14px;color:var(--text-soft);}
-  .hero-proof svg{width:16px;height:16px;color:var(--accent);}
+    .wrap {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
 
-  /* form card */
-  .form-card{background:var(--surface);border:1px solid var(--border);box-shadow:var(--bevel-top),var(--shadow-lg);
-    border-radius:var(--radius-xl);padding:clamp(1.75rem,3vw,2.5rem);}
-  .form-card h2{font-family:var(--font-editorial);font-weight:600;font-size:1.85rem;margin:0 0 4px;line-height:1.1;color:var(--text);}
-  .form-card .fc-sub{font-size:14px;color:var(--text-muted);margin:0 0 var(--space-5);}
-  .field{display:flex;flex-direction:column;gap:7px;margin-bottom:16px;}
-  .field label{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);}
-  .field input{width:100%;background:var(--ink-700);border:1px solid var(--border);border-radius:var(--radius-md);
-    padding:14px 16px;color:var(--text);font-family:var(--font-sans);font-size:15px;transition:border-color var(--dur-fast),box-shadow var(--dur-fast);}
-  .field input::placeholder{color:var(--text-dim);}
-  .field input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(201,168,106,.12);}
-  .privacy{display:flex;align-items:flex-start;gap:9px;margin-top:14px;font-size:12px;color:var(--text-dim);line-height:1.5;}
-  .privacy svg{width:14px;height:14px;color:var(--text-muted);flex:none;margin-top:2px;}
-  /* success state */
-  .success{display:none;text-align:center;padding:8px 0;}
-  .success.on{display:block;}
-  .form-live.off{display:none;}
-  .success .ok{width:56px;height:56px;border-radius:50%;border:1px solid var(--border-accent);background:rgba(201,168,106,.08);
-    display:flex;align-items:center;justify-content:center;color:var(--accent-bright);margin:0 auto var(--space-4);}
-  .success .ok svg{width:26px;height:26px;}
-  .success h3{font-family:var(--font-editorial);font-weight:600;font-size:1.6rem;margin:0 0 8px;color:var(--text);}
-  .success p{font-size:14px;color:var(--text-muted);margin:0 0 var(--space-5);line-height:1.6;}
+    .narrow {
+      max-width: 760px;
+      margin-inline: auto;
+    }
 
-  /* ====== generic section ====== */
-  section.blk{padding:var(--section-y) 0;border-bottom:1px solid var(--border-soft);}
-  .sec-head{display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center;margin-bottom:var(--space-7);}
-  .sec-head.left{align-items:flex-start;text-align:left;}
-  h2.title{font-family:var(--font-editorial);font-weight:600;font-size:var(--text-h2);line-height:1.15;letter-spacing:-.01em;margin:0;color:var(--text);text-wrap:balance;}
-  h2.title em{font-style:italic;color:var(--accent-bright);}
+    a {
+      color: inherit;
+    }
 
-  /* narrative */
-  .narrative p{font-size:var(--text-lead);color:var(--text-soft);line-height:1.7;margin:0 0 var(--space-5);text-wrap:pretty;}
-  .narrative p:last-child{margin-bottom:0;}
-  .narrative .closer{font-family:var(--font-editorial);font-style:italic;font-size:1.7rem;line-height:1.3;color:var(--accent-bright);}
+    /* pill */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .6em;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-accent);
+      background: rgba(201, 168, 106, .06);
+      font-size: var(--text-eyebrow);
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent-bright);
+      width: max-content;
+      max-width: 100%;
+    }
 
-  /* discover checklist */
-  .discover-card{background:var(--surface);border:1px solid var(--border);box-shadow:var(--elev-card);border-radius:var(--radius-xl);padding:clamp(1.75rem,4vw,3rem);}
-  ul.checklist{display:grid;grid-template-columns:1fr 1fr;gap:22px 40px;margin:0;padding:0;}
-  ul.checklist li{display:flex;gap:14px;align-items:flex-start;list-style:none;}
-  .tick{flex:none;width:24px;height:24px;margin-top:1px;border-radius:50%;border:1px solid var(--border-accent);background:rgba(201,168,106,.08);
-    display:flex;align-items:center;justify-content:center;color:var(--accent-bright);}
-  .tick svg{width:13px;height:13px;}
-  ul.checklist li .it{font-size:15px;color:var(--text-soft);line-height:1.55;}
+    .pill svg {
+      width: 14px;
+      height: 14px;
+      color: var(--accent);
+      flex: none;
+    }
 
-  /* instructor */
-  .instructor{display:grid;grid-template-columns:0.8fr 1.2fr;gap:var(--space-8);align-items:center;}
-  .photo{position:relative;aspect-ratio:4/5;border-radius:var(--radius-xl);border:1px solid var(--border);overflow:hidden;box-shadow:var(--bevel-top),var(--shadow-md);
-    background:repeating-linear-gradient(135deg,rgba(244,239,231,.045) 0 2px,transparent 2px 12px),linear-gradient(160deg,#2c2520,#15110e);}
-  .photo .pg{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,9,8,.85),transparent 60%);}
-  .photo .cap{position:absolute;left:18px;bottom:18px;font-family:var(--font-mono);font-size:11px;color:var(--text-muted);letter-spacing:.03em;}
-  .instructor .bio{font-size:var(--text-lead);color:var(--text-soft);line-height:1.7;margin:18px 0 var(--space-6);}
-  .instructor .bio b{color:var(--text);font-weight:600;}
-  .stats{display:flex;gap:0;flex-wrap:wrap;}
-  .stat{padding:0 var(--space-6);border-left:1px solid var(--border);}
-  .stat:first-child{padding-left:0;border-left:none;}
-  .stat .num{font-family:var(--font-statement);font-weight:600;font-size:clamp(2.2rem,3.5vw,2.9rem);line-height:1;letter-spacing:-.01em;color:var(--text);}
-  .stat .num.g{background:var(--gradient-gold-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-  .stat .sl{font-size:13px;color:var(--text-muted);margin-top:6px;}
+    .eyebrow {
+      font-size: var(--text-eyebrow);
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
 
-  /* final cta */
-  .final{position:relative;text-align:center;overflow:hidden;}
-  .final::before{content:"";position:absolute;inset:0;background:var(--gradient-aura);pointer-events:none;}
-  .final .inner{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:var(--space-5);}
-  .final p{font-size:var(--text-lead);color:var(--text-soft);line-height:1.7;margin:0;max-width:60ch;text-wrap:pretty;}
-  .final .big{font-family:var(--font-editorial);font-style:italic;font-size:clamp(2rem,4vw,3rem);color:var(--text);line-height:1.2;}
-  .final .big em{color:var(--accent-bright);font-style:italic;}
+    /* buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6em;
+      padding: 16px 30px;
+      font-family: var(--font-sans);
+      font-size: .8125rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      border-radius: var(--radius-pill);
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      line-height: 1;
+      transition: transform var(--dur-fast) var(--ease-out), background var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+    }
 
-  /* footer */
-  footer{padding:var(--space-8) 0;text-align:center;}
-  footer img{width:240px;max-width:70%;opacity:.92;}
-  footer p{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);margin-top:var(--space-4);letter-spacing:.03em;line-height:1.7;}
+    .btn svg {
+      width: 16px;
+      height: 16px;
+    }
 
-  @media(max-width:860px){
-    .hero-grid{grid-template-columns:1fr;gap:var(--space-6);}
-    .instructor{grid-template-columns:1fr;gap:var(--space-6);}
-    .photo{max-width:340px;}
-    ul.checklist{grid-template-columns:1fr;gap:18px;}
-    .topbar .when{display:none;}
-  }
-</style>
+    .btn.primary {
+      background: var(--gradient-gold);
+      color: #2A1F0C;
+      box-shadow: var(--glow-gold);
+    }
+
+    .btn.primary:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn.full {
+      width: 100%;
+    }
+
+    .btn.lg {
+      padding: 18px 36px;
+      font-size: .875rem;
+    }
+
+    .btn.ghost {
+      background: transparent;
+      color: var(--text-soft);
+      text-transform: none;
+      letter-spacing: .01em;
+      font-weight: 600;
+      border: none;
+      padding: 8px;
+    }
+
+    .btn.ghost:hover {
+      color: var(--accent-bright);
+    }
+
+    /* ====== top bar ====== */
+    .topbar {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand img {
+      width: 40px;
+      height: 40px;
+    }
+
+    .brand .nm {
+      font-family: var(--font-statement);
+      font-weight: 500;
+      letter-spacing: .14em;
+      font-size: 18px;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .topbar .when {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: .03em;
+    }
+
+    /* ====== hero ====== */
+    .hero {
+      position: relative;
+      border-bottom: 1px solid var(--border-soft);
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--gradient-aura);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: var(--space-8);
+      align-items: center;
+      padding: clamp(2.5rem, 6vw, 5rem) var(--gutter) clamp(3.5rem, 8vw, 6rem);
+    }
+
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+
+    #headline {
+      font-family: var(--font-editorial);
+      font-weight: 600;
+      font-size: clamp(2rem, 3vw, 2.8rem);
+      line-height: 1.24;
+      letter-spacing: -.005em;
+      margin: 0;
+      color: var(--text);
+      text-wrap: pretty;
+    }
+
+    #headline em {
+      font-style: italic;
+      color: var(--accent-bright);
+      font-weight: 600;
+    }
+
+    #subheadline {
+      font-size: var(--text-lead);
+      color: var(--text-muted);
+      margin: 0;
+      max-width: 54ch;
+      text-wrap: pretty;
+    }
+
+    .hero-proof {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .hero-proof div {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 14px;
+      color: var(--text-soft);
+    }
+
+    .hero-proof svg {
+      width: 16px;
+      height: 16px;
+      color: var(--accent);
+    }
+
+    /* form card */
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--bevel-top), var(--shadow-lg);
+      border-radius: var(--radius-xl);
+      padding: clamp(1.75rem, 3vw, 2.5rem);
+    }
+
+    .form-card h2 {
+      font-family: var(--font-editorial);
+      font-weight: 600;
+      font-size: 1.85rem;
+      margin: 0 0 4px;
+      line-height: 1.1;
+      color: var(--text);
+    }
+
+    .form-card .fc-sub {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin: 0 0 var(--space-5);
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .field input {
+      width: 100%;
+      background: var(--ink-700);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+    }
+
+    .field input::placeholder {
+      color: var(--text-dim);
+    }
+
+    .field input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(201, 168, 106, .12);
+    }
+
+    .privacy {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
+    .privacy svg {
+      width: 14px;
+      height: 14px;
+      color: var(--text-muted);
+      flex: none;
+      margin-top: 2px;
+    }
+
+    /* success state */
+    .success {
+      display: none;
+      text-align: center;
+      padding: 8px 0;
+    }
+
+    .success.on {
+      display: block;
+    }
+
+    .form-live.off {
+      display: none;
+    }
+
+    .success .ok {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 1px solid var(--border-accent);
+      background: rgba(201, 168, 106, .08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-bright);
+      margin: 0 auto var(--space-4);
+    }
+
+    .success .ok svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .success h3 {
+      font-family: var(--font-editorial);
+      font-weight: 600;
+      font-size: 1.6rem;
+      margin: 0 0 8px;
+      color: var(--text);
+    }
+
+    .success p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin: 0 0 var(--space-5);
+      line-height: 1.6;
+    }
+
+    /* ====== generic section ====== */
+    section.blk {
+      padding: var(--section-y) 0;
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .sec-head {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+      text-align: center;
+      margin-bottom: var(--space-7);
+    }
+
+    .sec-head.left {
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    h2.title {
+      font-family: var(--font-editorial);
+      font-weight: 600;
+      font-size: var(--text-h2);
+      line-height: 1.15;
+      letter-spacing: -.01em;
+      margin: 0;
+      color: var(--text);
+      text-wrap: balance;
+    }
+
+    h2.title em {
+      font-style: italic;
+      color: var(--accent-bright);
+    }
+
+    /* narrative */
+    .narrative p {
+      font-size: var(--text-lead);
+      color: var(--text-soft);
+      line-height: 1.7;
+      margin: 0 0 var(--space-5);
+      text-wrap: pretty;
+    }
+
+    .narrative p:last-child {
+      margin-bottom: 0;
+    }
+
+    .narrative .closer {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-size: 1.7rem;
+      line-height: 1.3;
+      color: var(--accent-bright);
+    }
+
+    /* discover checklist */
+    .discover-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--elev-card);
+      border-radius: var(--radius-xl);
+      padding: clamp(1.75rem, 4vw, 3rem);
+    }
+
+    ul.checklist {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px 40px;
+      margin: 0;
+      padding: 0;
+    }
+
+    ul.checklist li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      list-style: none;
+    }
+
+    .tick {
+      flex: none;
+      width: 24px;
+      height: 24px;
+      margin-top: 1px;
+      border-radius: 50%;
+      border: 1px solid var(--border-accent);
+      background: rgba(201, 168, 106, .08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-bright);
+    }
+
+    .tick svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    ul.checklist li .it {
+      font-size: 15px;
+      color: var(--text-soft);
+      line-height: 1.55;
+    }
+
+    /* instructor */
+    .instructor {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: var(--space-8);
+      align-items: center;
+    }
+
+    .photo {
+      position: relative;
+      aspect-ratio: 4/5;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: var(--bevel-top), var(--shadow-md);
+      background: repeating-linear-gradient(135deg, rgba(244, 239, 231, .045) 0 2px, transparent 2px 12px), linear-gradient(160deg, #2c2520, #15110e);
+    }
+
+    .photo .pg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10, 9, 8, .85), transparent 60%);
+    }
+
+    .photo .cap {
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: .03em;
+    }
+
+    .instructor .bio {
+      font-size: var(--text-lead);
+      color: var(--text-soft);
+      line-height: 1.7;
+      margin: 18px 0 var(--space-6);
+    }
+
+    .instructor .bio b {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .stats {
+      display: flex;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      padding: 0 var(--space-6);
+      border-left: 1px solid var(--border);
+    }
+
+    .stat:first-child {
+      padding-left: 0;
+      border-left: none;
+    }
+
+    .stat .num {
+      font-family: var(--font-statement);
+      font-weight: 600;
+      font-size: clamp(2.2rem, 3.5vw, 2.9rem);
+      line-height: 1;
+      letter-spacing: -.01em;
+      color: var(--text);
+    }
+
+    .stat .num.g {
+      background: var(--gradient-gold-text);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat .sl {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* final cta */
+    .final {
+      position: relative;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .final::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--gradient-aura);
+      pointer-events: none;
+    }
+
+    .final .inner {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-5);
+    }
+
+    .final p {
+      font-size: var(--text-lead);
+      color: var(--text-soft);
+      line-height: 1.7;
+      margin: 0;
+      max-width: 60ch;
+      text-wrap: pretty;
+    }
+
+    .final .big {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .final .big em {
+      color: var(--accent-bright);
+      font-style: italic;
+    }
+
+    /* footer */
+    footer {
+      padding: var(--space-8) 0;
+      text-align: center;
+    }
+
+    footer img {
+      width: 240px;
+      max-width: 70%;
+      opacity: .92;
+    }
+
+    footer p {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: var(--space-4);
+      letter-spacing: .03em;
+      line-height: 1.7;
+    }
+
+    @media(max-width:860px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-6);
+      }
+
+      .hero-proof {
+        flex-direction: column;
+        gap: 12px;
+        margin-top: var(--space-4);
+      }
+
+      .form-card {
+        padding: 24px 20px;
+      }
+
+      .discover-card {
+        padding: 24px 20px;
+      }
+
+      .instructor {
+        grid-template-columns: 1fr;
+        gap: var(--space-6);
+      }
+
+      .photo {
+        max-width: 340px;
+      }
+
+      ul.checklist {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .topbar .when {
+        display: none;
+      }
+    }
+
+    @media(max-width:480px) {
+      .btn:not(.ghost) {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="wrap">
-  <!-- top bar -->
-  <div class="topbar">
-    <div class="brand">
-      <img src="assets/monogram.svg" alt="Novo Ego">
-      <span class="nm">Novo Ego</span>
-    </div>
-    <span class="when" id="when-text">Aula online e gratuita · 12 de junho às 20h</span>
-  </div>
-</div>
-
-<!-- ============ HERO ============ -->
-<header class="hero">
-  <div class="wrap hero-grid">
-    <div class="hero-copy">
-      <span class="pill"><i data-lucide="radio"></i><span id="badge-text">Aula gratuita · 12 de junho às 20h</span></span>
-      <h1 id="headline">Dependência emocional não é fraqueza. É uma ferida que ninguém te ensinou a curar — mas que dá para <em>entender, tratar e transformar em propósito</em>.</h1>
-      <p id="subheadline">Nessa aula gratuita, você vai descobrir o que está por trás desse padrão — e por que tantas pessoas partiram da própria dor para construir uma carreira inteira ajudando os outros.</p>
-      <div class="hero-proof">
-        <div><i data-lucide="video"></i>100% online e ao vivo</div>
-        <div><i data-lucide="gift"></i>Participação gratuita</div>
-        <div><i data-lucide="brain"></i>Pela ótica da psicanálise</div>
-      </div>
-    </div>
-
-    <!-- form -->
-    <div class="form-card" id="form">
-      <div class="form-live" id="form-live">
-        <h2>Garanta sua vaga gratuita</h2>
-        <p class="fc-sub">Preencha abaixo e entre no grupo exclusivo onde a aula será liberada.</p>
-        <form id="capture-form" novalidate>
-          <div class="field">
-            <label for="nome">Nome completo</label>
-            <input id="nome" name="nome" type="text" placeholder="Seu nome" autocomplete="name" required>
-          </div>
-          <div class="field">
-            <label for="email">E-mail</label>
-            <input id="email" name="email" type="email" placeholder="voce@email.com" autocomplete="email" required>
-          </div>
-          <div class="field">
-            <label for="whats">WhatsApp com DDD</label>
-            <input id="whats" name="whats" type="tel" placeholder="(11) 90000-0000" autocomplete="tel" required>
-          </div>
-          <button class="btn primary full lg" type="submit">Quero minha vaga gratuita <i data-lucide="arrow-right"></i></button>
-          <div class="privacy"><i data-lucide="lock"></i><span>Seus dados estão seguros. Sem spam — só o link da aula e conteúdos que não saem em nenhum outro lugar.</span></div>
-        </form>
-      </div>
-      <!-- success -->
-      <div class="success" id="form-success">
-        <div class="ok"><i data-lucide="check"></i></div>
-        <h3>Inscrição confirmada</h3>
-        <p>Falta só um passo — e ele é o mais importante. O link da aula será liberado <b style="color:var(--text)">apenas no grupo do WhatsApp</b>. Se você não entrar agora, corre o risco real de perder a aula.</p>
-        <a class="btn primary full lg" href="#"><i data-lucide="message-circle"></i> Entrar no grupo agora</a>
-      </div>
-    </div>
-  </div>
-</header>
-
-<!-- ============ VOCÊ CHEGOU AQUI ============ -->
-<section class="blk">
-  <div class="wrap narrow narrative">
-    <div class="sec-head"><span class="eyebrow">Você chegou aqui por um motivo</span></div>
-    <p>Talvez você se prenda a pessoas que te machucam e não consiga entender por quê. Talvez você veja alguém ao seu redor destruindo a própria vida em nome de uma relação doentia — e sinta um chamado para ajudar. Talvez as duas coisas ao mesmo tempo.</p>
-    <p>O que a maioria das pessoas não sabe é que dependência emocional não tem a ver com amor demais. Tem a ver com o que aconteceu antes. Com o que foi formado dentro de você — ou dentro de quem você quer ajudar — muito antes dessa relação existir.</p>
-    <p class="closer">É isso que a psicanálise enxerga. E é isso que essa aula vai te mostrar.</p>
-  </div>
-</section>
-
-<!-- ============ O QUE VOCÊ VAI DESCOBRIR ============ -->
-<section class="blk">
   <div class="wrap">
-    <div class="sec-head">
-      <span class="pill"><i data-lucide="sparkles"></i>O conteúdo da aula</span>
-      <h2 class="title">O que você vai <em>descobrir</em></h2>
-    </div>
-    <div class="discover-card">
-      <ul class="checklist">
-        <li><span class="tick"><i data-lucide="check"></i></span><span class="it">A <b style="color:var(--text)">raiz inconsciente</b> da dependência emocional — e por que nenhuma quantidade de força de vontade resolve o que está no fundo.</span></li>
-        <li><span class="tick"><i data-lucide="check"></i></span><span class="it">Por que você (ou quem você quer ajudar) volta sempre para o mesmo padrão, mesmo sabendo que machuca.</span></li>
-        <li><span class="tick"><i data-lucide="check"></i></span><span class="it">Como a psicanálise enxerga e trata esse ciclo de forma profunda — não só no sintoma, mas na <b style="color:var(--text)">origem</b>.</span></li>
-        <li><span class="tick"><i data-lucide="check"></i></span><span class="it">O que significa realmente conduzir alguém a uma transformação — e como isso se aprende.</span></li>
-        <li><span class="tick"><i data-lucide="check"></i></span><span class="it">Por que tantas pessoas partiram da própria ferida para construir uma <b style="color:var(--text)">carreira inteira</b> com propósito e resultado.</span></li>
-        <li><span class="tick"><i data-lucide="check"></i></span><span class="it">O primeiro passo concreto — seja para começar a se libertar, seja para começar a ajudar.</span></li>
-      </ul>
+    <!-- top bar -->
+    <div class="topbar">
+      <div class="brand">
+        <img src="assets/monogram.svg" alt="Novo Ego">
+        <span class="nm">Novo Ego</span>
+      </div>
+      <span class="when" id="when-text">Aula online e gratuita · 12 de junho às 20h</span>
     </div>
   </div>
-</section>
 
-<!-- ============ QUEM VAI CONDUZIR ============ -->
-<section class="blk">
-  <div class="wrap">
-    <div class="instructor">
-      <div class="photo"><div class="pg"></div><div class="cap">foto P&amp;B · retrato do especialista · 4:5</div></div>
-      <div>
-        <span class="eyebrow">Quem vai conduzir a aula</span>
-        <p class="bio" id="bio"><b id="bio-name">[Nome do Especialista]</b> é <span id="bio-cred">psicanalista clínico</span>, com <span id="bio-years">12</span> anos de experiência ajudando pessoas a transformarem sua relação consigo mesmas e com os outros através da psicanálise.</p>
-        <div class="stats">
-          <div class="stat"><div class="num g" id="stat-formed">2.000+</div><div class="sl">Profissionais formados</div></div>
-          <div class="stat"><div class="num" id="stat-processes">5.000+</div><div class="sl">Processos acompanhados</div></div>
-          <div class="stat"><div class="num" id="stat-years2">12</div><div class="sl">Anos de clínica</div></div>
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="pill"><i data-lucide="radio"></i><span id="badge-text">Aula gratuita · 12 de junho às
+            20h</span></span>
+        <h1 id="headline">Dependência emocional não é fraqueza. É uma ferida que ninguém te ensinou a curar — mas que dá
+          para <em>entender, tratar e transformar em propósito</em>.</h1>
+        <p id="subheadline">Nessa aula gratuita, você vai descobrir o que está por trás desse padrão — e por que tantas
+          pessoas partiram da própria dor para construir uma carreira inteira ajudando os outros.</p>
+        <div class="hero-proof">
+          <div><i data-lucide="video"></i>100% online e ao vivo</div>
+          <div><i data-lucide="gift"></i>Participação gratuita</div>
+          <div><i data-lucide="brain"></i>Pela ótica da psicanálise</div>
+        </div>
+      </div>
+
+      <!-- form -->
+      <div class="form-card" id="form">
+        <div class="form-live" id="form-live">
+          <h2>Garanta sua vaga gratuita</h2>
+          <p class="fc-sub">Preencha abaixo e entre no grupo exclusivo onde a aula será liberada.</p>
+          <form id="capture-form" novalidate>
+            <div class="field">
+              <label for="nome">Nome completo</label>
+              <input id="nome" name="nome" type="text" placeholder="Seu nome" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="email">E-mail</label>
+              <input id="email" name="email" type="email" placeholder="voce@email.com" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="whats">WhatsApp com DDD</label>
+              <input id="whats" name="whats" type="tel" placeholder="(11) 90000-0000" autocomplete="tel" required>
+            </div>
+            <button class="btn primary full lg" type="submit">Quero minha vaga gratuita <i
+                data-lucide="arrow-right"></i></button>
+            <div class="privacy"><i data-lucide="lock"></i><span>Seus dados estão seguros. Sem spam — só o link da aula
+                e conteúdos que não saem em nenhum outro lugar.</span></div>
+          </form>
+        </div>
+        <!-- success -->
+        <div class="success" id="form-success">
+          <div class="ok"><i data-lucide="check"></i></div>
+          <h3>Inscrição confirmada</h3>
+          <p>Falta só um passo — e ele é o mais importante. O link da aula será liberado <b
+              style="color:var(--text)">apenas no grupo do WhatsApp</b>. Se você não entrar agora, corre o risco real de
+            perder a aula.</p>
+          <a class="btn primary full lg" href="https://chat.whatsapp.com/Gi6vO5QGq42CxCaLHCXwEd" id="whatsapp-btn"><i data-lucide="message-circle"></i> Entrar no grupo agora</a>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </header>
 
-<!-- ============ FINAL CTA ============ -->
-<section class="blk final">
-  <div class="wrap narrow inner">
-    <span class="eyebrow">Uma última coisa antes de você sair</span>
-    <p>Você não chegou aqui por acaso. Seja qual for o motivo que te trouxe até aqui — curar ou ajudar — o ponto de partida é o mesmo: entender como a mente humana funciona.</p>
-    <p class="big">Essa aula é <em>esse ponto de partida</em>.</p>
-    <a class="btn primary lg" href="#form" id="final-cta">Quero participar da aula gratuita <i data-lucide="arrow-right"></i></a>
-  </div>
-</section>
+  <!-- ============ VOCÊ CHEGOU AQUI ============ -->
+  <section class="blk">
+    <div class="wrap narrow narrative">
+      <div class="sec-head"><span class="eyebrow">Você chegou aqui por um motivo</span></div>
+      <p>Talvez você se prenda a pessoas que te machucam e não consiga entender por quê. Talvez você veja alguém ao seu
+        redor destruindo a própria vida em nome de uma relação doentia — e sinta um chamado para ajudar. Talvez as duas
+        coisas ao mesmo tempo.</p>
+      <p>O que a maioria das pessoas não sabe é que dependência emocional não tem a ver com amor demais. Tem a ver com o
+        que aconteceu antes. Com o que foi formado dentro de você — ou dentro de quem você quer ajudar — muito antes
+        dessa relação existir.</p>
+      <p class="closer">É isso que a psicanálise enxerga. E é isso que essa aula vai te mostrar.</p>
+    </div>
+  </section>
 
-<!-- ============ FOOTER ============ -->
-<footer>
-  <div class="wrap">
-    <img src="assets/wordmark.svg" alt="Novo Ego — Formação em Psicanálise">
-    <p>Novo Ego · Formação em Psicanálise · A nova ciência da mente<br>Este conteúdo é educativo e não substitui acompanhamento profissional individual.</p>
-  </div>
-</footer>
+  <!-- ============ O QUE VOCÊ VAI DESCOBRIR ============ -->
+  <section class="blk">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="pill"><i data-lucide="sparkles"></i>O conteúdo da aula</span>
+        <h2 class="title">O que você vai <em>descobrir</em></h2>
+      </div>
+      <div class="discover-card">
+        <ul class="checklist">
+          <li><span class="tick"><i data-lucide="check"></i></span><span class="it">A <b style="color:var(--text)">raiz
+                inconsciente</b> da dependência emocional — e por que nenhuma quantidade de força de vontade resolve o
+              que está no fundo.</span></li>
+          <li><span class="tick"><i data-lucide="check"></i></span><span class="it">Por que você (ou quem você quer
+              ajudar) volta sempre para o mesmo padrão, mesmo sabendo que machuca.</span></li>
+          <li><span class="tick"><i data-lucide="check"></i></span><span class="it">Como a psicanálise enxerga e trata
+              esse ciclo de forma profunda — não só no sintoma, mas na <b style="color:var(--text)">origem</b>.</span>
+          </li>
+          <li><span class="tick"><i data-lucide="check"></i></span><span class="it">O que significa realmente conduzir
+              alguém a uma transformação — e como isso se aprende.</span></li>
+          <li><span class="tick"><i data-lucide="check"></i></span><span class="it">Por que tantas pessoas partiram da
+              própria ferida para construir uma <b style="color:var(--text)">carreira inteira</b> com propósito e
+              resultado.</span></li>
+          <li><span class="tick"><i data-lucide="check"></i></span><span class="it">O primeiro passo concreto — seja
+              para começar a se libertar, seja para começar a ajudar.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-<div id="tweaks-root"></div>
+  <!-- ============ FINAL CTA ============ -->
+  <section class="blk final">
+    <div class="wrap narrow inner">
+      <span class="eyebrow">Uma última coisa antes de você sair</span>
+      <p>Você não chegou aqui por acaso. Seja qual for o motivo que te trouxe até aqui — curar ou ajudar — o ponto de
+        partida é o mesmo: entender como a mente humana funciona.</p>
+      <p class="big">Essa aula é <em>esse ponto de partida</em>.</p>
+      <a class="btn primary lg" href="#form" id="final-cta">Quero participar da aula gratuita <i
+          data-lucide="arrow-right"></i></a>
+    </div>
+  </section>
 
-<!-- ============ SCRIPTS ============ -->
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-<script type="text/babel" src="tweaks-panel.jsx"></script>
-<script type="text/babel">
-  // ----- form behaviour -----
-  (function () {
-    const form = document.getElementById('capture-form');
-    if (form) {
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        document.getElementById('form-live').classList.add('off');
-        document.getElementById('form-success').classList.add('on');
-        lucide.createIcons();
-        document.getElementById('form').scrollIntoView ? null : null;
-      });
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="wrap">
+      <img src="assets/wordmark.svg" alt="Novo Ego — Formação em Psicanálise">
+      <p>Novo Ego · Formação em Psicanálise · A nova ciência da mente<br>Este conteúdo é educativo e não substitui
+        acompanhamento profissional individual.</p>
+    </div>
+  </footer>
+
+  <div id="tweaks-root"></div>
+
+  <!-- ============ SCRIPTS ============ -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"
+    integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"
+    integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"
+    integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y"
+    crossorigin="anonymous"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel">
+    // ----- form behaviour & integration -----
+    (function () {
+      const WHATSAPP_URL = 'https://chat.whatsapp.com/Gi6vO5QGq42CxCaLHCXwEd';
+      const GOOGLE_SHEETS_SCRIPT_URL = ''; // Cole aqui a URL do Web App gerada no Google Apps Script
+
+      const form = document.getElementById('capture-form');
+      const whatsappBtn = document.getElementById('whatsapp-btn');
+      let redirectTimeout = null;
+
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+
+          // Obter dados do formulário
+          const nome = document.getElementById('nome').value;
+          const email = document.getElementById('email').value;
+          const whats = document.getElementById('whats').value;
+
+          // Capturar parâmetros UTM da URL
+          const urlParams = new URLSearchParams(window.location.search);
+          const utm_source = urlParams.get('utm_source') || '';
+          const utm_medium = urlParams.get('utm_medium') || '';
+          const utm_campaign = urlParams.get('utm_campaign') || '';
+          const utm_term = urlParams.get('utm_term') || '';
+          const utm_content = urlParams.get('utm_content') || '';
+
+          // Montar payload
+          const payload = {
+            nome: nome,
+            email: email,
+            whats: whats,
+            utm_source: utm_source,
+            utm_medium: utm_medium,
+            utm_campaign: utm_campaign,
+            utm_term: utm_term,
+            utm_content: utm_content,
+            url: window.location.href
+          };
+
+          // Enviar dados para o Google Sheets (se a URL estiver configurada)
+          if (GOOGLE_SHEETS_SCRIPT_URL) {
+            fetch(GOOGLE_SHEETS_SCRIPT_URL, {
+              method: 'POST',
+              mode: 'no-cors', // Evita erros de CORS no envio simples para o Apps Script
+              headers: {
+                'Content-Type': 'text/plain'
+              },
+              body: JSON.stringify(payload)
+            }).catch(err => console.error('Erro ao enviar dados para a planilha:', err));
+          } else {
+            console.warn('URL do Google Sheets não configurada.');
+          }
+
+          // Transicionar para estado de sucesso
+          document.getElementById('form-live').classList.add('off');
+          document.getElementById('form-success').classList.add('on');
+          lucide.createIcons();
+          
+          const formCard = document.getElementById('form');
+          if (formCard && formCard.scrollIntoView) {
+            formCard.scrollIntoView({ behavior: 'smooth' });
+          }
+
+          // Redirecionamento automático após 4 segundos (4000ms)
+          redirectTimeout = setTimeout(function () {
+            window.location.href = WHATSAPP_URL;
+          }, 4000);
+        });
+      }
+
+      // Limpar o timeout se o usuário clicar manualmente no botão de entrar no grupo
+      if (whatsappBtn) {
+        whatsappBtn.addEventListener('click', function () {
+          if (redirectTimeout) {
+            clearTimeout(redirectTimeout);
+          }
+        });
+      }
+    })();
+
+    // ----- headline angles -----
+    const ANGLES = {
+      'Ângulo 1 — a ferida': {
+        h: 'Você se perde em quem você ama. E no fundo, você também não sabe <em>quem você é</em> sem o outro.',
+        s: 'Seja para se libertar desse padrão ou para ajudar quem sofre com ele — a psicanálise é o único caminho que vai à raiz. E essa aula é o começo.',
+      },
+      'Ângulo 2 — virada de chave': {
+        h: 'Dependência emocional não é fraqueza. É uma ferida que ninguém te ensinou a curar — mas que dá para <em>entender, tratar e transformar em propósito</em>.',
+        s: 'Nessa aula gratuita, você vai descobrir o que está por trás desse padrão — e por que tantas pessoas partiram da própria dor para construir uma carreira inteira ajudando os outros.',
+      },
+      'Ângulo 3 — espelho direto': {
+        h: 'Você já tentou largar. Já prometeu que seria diferente. E voltou. Isso não é falta de força — é a sua mente seguindo <em>um padrão que você ainda não conhece</em>.',
+        s: 'Entender esse padrão muda tudo — seja para se libertar, seja para ajudar outras pessoas a fazerem o mesmo. É isso que essa aula gratuita vai te mostrar.',
+      },
+      'Ângulo 4 — identidade dupla': {
+        h: 'Você sofreu com isso. Ou você vê o outro sofrer e quer ajudar. De qualquer forma, você está aqui — <em>e isso já diz muito</em>.',
+        s: 'Essa aula gratuita é para quem quer entender a dependência emocional por dentro: para se curar, para se formar, ou para as duas coisas ao mesmo tempo.',
+      },
+    };
+
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "angulo": "Ângulo 2 — virada de chave",
+      "data": "12 de junho",
+      "horario": "20h",
+      "nome": "[Nome do Especialista]",
+      "credencial": "psicanalista clínico",
+      "anos": "12"
+    }/*EDITMODE-END*/;
+
+    function applyTweaks(t) {
+      const ang = ANGLES[t.angulo] || ANGLES['Ângulo 2 — virada de chave'];
+      document.getElementById('headline').innerHTML = ang.h;
+      document.getElementById('subheadline').textContent = ang.s;
+      document.getElementById('badge-text').textContent = 'Aula gratuita · ' + t.data + ' às ' + t.horario;
+      document.getElementById('when-text').textContent = 'Aula online e gratuita · ' + t.data + ' às ' + t.horario;
+      
+      const bioName = document.getElementById('bio-name');
+      const bioCred = document.getElementById('bio-cred');
+      const bioYears = document.getElementById('bio-years');
+      const statYears2 = document.getElementById('stat-years2');
+      if (bioName) bioName.textContent = t.nome;
+      if (bioCred) bioCred.textContent = t.credencial;
+      if (bioYears) bioYears.textContent = t.anos;
+      if (statYears2) statYears2.textContent = t.anos;
     }
-  })();
 
-  // ----- headline angles -----
-  const ANGLES = {
-    'Ângulo 1 — a ferida': {
-      h: 'Você se perde em quem você ama. E no fundo, você também não sabe <em>quem você é</em> sem o outro.',
-      s: 'Seja para se libertar desse padrão ou para ajudar quem sofre com ele — a psicanálise é o único caminho que vai à raiz. E essa aula é o começo.',
-    },
-    'Ângulo 2 — virada de chave': {
-      h: 'Dependência emocional não é fraqueza. É uma ferida que ninguém te ensinou a curar — mas que dá para <em>entender, tratar e transformar em propósito</em>.',
-      s: 'Nessa aula gratuita, você vai descobrir o que está por trás desse padrão — e por que tantas pessoas partiram da própria dor para construir uma carreira inteira ajudando os outros.',
-    },
-    'Ângulo 3 — espelho direto': {
-      h: 'Você já tentou largar. Já prometeu que seria diferente. E voltou. Isso não é falta de força — é a sua mente seguindo <em>um padrão que você ainda não conhece</em>.',
-      s: 'Entender esse padrão muda tudo — seja para se libertar, seja para ajudar outras pessoas a fazerem o mesmo. É isso que essa aula gratuita vai te mostrar.',
-    },
-    'Ângulo 4 — identidade dupla': {
-      h: 'Você sofreu com isso. Ou você vê o outro sofrer e quer ajudar. De qualquer forma, você está aqui — <em>e isso já diz muito</em>.',
-      s: 'Essa aula gratuita é para quem quer entender a dependência emocional por dentro: para se curar, para se formar, ou para as duas coisas ao mesmo tempo.',
-    },
-  };
+    function App() {
+      const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+      React.useEffect(() => { applyTweaks(t); lucide.createIcons(); }, [t]);
+      return (
+        <TweaksPanel title="Tweaks">
+          <TweakSection label="Comunicação" />
+          <TweakSelect label="Ângulo da headline" value={t.angulo}
+            options={Object.keys(ANGLES)}
+            onChange={(v) => setTweak('angulo', v)} />
+          <TweakSection label="Detalhes da aula" />
+          <TweakText label="Data" value={t.data} onChange={(v) => setTweak('data', v)} />
+          <TweakText label="Horário" value={t.horario} onChange={(v) => setTweak('horario', v)} />
+          <TweakSection label="Especialista" />
+          <TweakText label="Nome" value={t.nome} onChange={(v) => setTweak('nome', v)} />
+          <TweakText label="Título / formação" value={t.credencial} onChange={(v) => setTweak('credencial', v)} />
+          <TweakText label="Anos de clínica" value={t.anos} onChange={(v) => setTweak('anos', v)} />
+        </TweaksPanel>
+      );
+    }
 
-  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-    "angulo": "Ângulo 2 — virada de chave",
-    "data": "12 de junho",
-    "horario": "20h",
-    "nome": "[Nome do Especialista]",
-    "credencial": "psicanalista clínico",
-    "anos": "12"
-  }/*EDITMODE-END*/;
-
-  function applyTweaks(t) {
-    const ang = ANGLES[t.angulo] || ANGLES['Ângulo 2 — virada de chave'];
-    document.getElementById('headline').innerHTML = ang.h;
-    document.getElementById('subheadline').textContent = ang.s;
-    document.getElementById('badge-text').textContent = 'Aula gratuita · ' + t.data + ' às ' + t.horario;
-    document.getElementById('when-text').textContent = 'Aula online e gratuita · ' + t.data + ' às ' + t.horario;
-    document.getElementById('bio-name').textContent = t.nome;
-    document.getElementById('bio-cred').textContent = t.credencial;
-    document.getElementById('bio-years').textContent = t.anos;
-    document.getElementById('stat-years2').textContent = t.anos;
-  }
-
-  function App() {
-    const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
-    React.useEffect(() => { applyTweaks(t); lucide.createIcons(); }, [t]);
-    return (
-      <TweaksPanel title="Tweaks">
-        <TweakSection label="Comunicação" />
-        <TweakSelect label="Ângulo da headline" value={t.angulo}
-          options={Object.keys(ANGLES)}
-          onChange={(v) => setTweak('angulo', v)} />
-        <TweakSection label="Detalhes da aula" />
-        <TweakText label="Data" value={t.data} onChange={(v) => setTweak('data', v)} />
-        <TweakText label="Horário" value={t.horario} onChange={(v) => setTweak('horario', v)} />
-        <TweakSection label="Especialista" />
-        <TweakText label="Nome" value={t.nome} onChange={(v) => setTweak('nome', v)} />
-        <TweakText label="Título / formação" value={t.credencial} onChange={(v) => setTweak('credencial', v)} />
-        <TweakText label="Anos de clínica" value={t.anos} onChange={(v) => setTweak('anos', v)} />
-      </TweaksPanel>
-    );
-  }
-
-  ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<App />);
-  lucide.createIcons();
-</script>
+    ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<App />);
+    lucide.createIcons();
+  </script>
 </body>
+
 </html>
