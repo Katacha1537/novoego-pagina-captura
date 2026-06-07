@@ -679,6 +679,33 @@
         width: 100%;
       }
     }
+
+    /* Validation Errors */
+    .field input.error {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(201, 106, 90, 0.15);
+    }
+
+    .error-msg {
+      font-size: 12px;
+      color: var(--danger);
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      animation: fieldErrorIn 0.2s ease-out;
+    }
+
+    @keyframes fieldErrorIn {
+      from {
+        opacity: 0;
+        transform: translateY(-4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
 
@@ -830,20 +857,164 @@
     // ----- form behaviour & integration -----
     (function () {
       const WHATSAPP_URL = 'https://chat.whatsapp.com/Gi6vO5QGq42CxCaLHCXwEd';
-      const GOOGLE_SHEETS_SCRIPT_URL = ''; // Cole aqui a URL do Web App gerada no Google Apps Script
+      const GOOGLE_SHEETS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzaBnCnTkkuDTKJP687XgeZm24Zi6PYdpwMwlYVuDRM0ib68ArSZmUCjm3Zfs4iyGj4tg/exec';
 
       const form = document.getElementById('capture-form');
       const whatsappBtn = document.getElementById('whatsapp-btn');
+      const nomeInput = document.getElementById('nome');
+      const emailInput = document.getElementById('email');
+      const whatsInput = document.getElementById('whats');
       let redirectTimeout = null;
+
+      function showError(inputEl, message) {
+        inputEl.classList.add('error');
+        removeError(inputEl);
+        
+        const errorEl = document.createElement('div');
+        errorEl.className = 'error-msg';
+        errorEl.innerHTML = `<i data-lucide="alert-circle" style="width: 14px; height: 14px; flex-shrink: 0;"></i> <span>${message}</span>`;
+        inputEl.parentNode.appendChild(errorEl);
+        
+        if (window.lucide) {
+          window.lucide.createIcons();
+        }
+      }
+
+      function removeError(inputEl) {
+        inputEl.classList.remove('error');
+        const parent = inputEl.parentNode;
+        const errorMsg = parent.querySelector('.error-msg');
+        if (errorMsg) {
+          errorMsg.remove();
+        }
+      }
+
+      // Add real-time validation listeners to remove error styling on edit
+      if (nomeInput) {
+        nomeInput.addEventListener('input', function () {
+          const nomeVal = nomeInput.value.trim();
+          const nameParts = nomeVal.split(/\s+/).filter(part => part.length >= 2);
+          if (nomeVal && nameParts.length >= 2) {
+            removeError(nomeInput);
+          }
+        });
+      }
+
+      if (emailInput) {
+        emailInput.addEventListener('input', function () {
+          const emailVal = emailInput.value.trim();
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (emailVal && emailRegex.test(emailVal)) {
+            removeError(emailInput);
+          }
+        });
+      }
+
+      // WhatsApp input masking & error clearance
+      if (whatsInput) {
+        whatsInput.addEventListener('input', function (e) {
+          let value = e.target.value.replace(/\D/g, '');
+          if (value.length > 11) {
+            value = value.slice(0, 11);
+          }
+          
+          let formattedValue = '';
+          if (value.length > 0) {
+            formattedValue += '(' + value.slice(0, 2);
+          }
+          if (value.length > 2) {
+            formattedValue += ') ' + value.slice(2, 7);
+          }
+          if (value.length > 7) {
+            formattedValue += '-' + value.slice(7, 11);
+          }
+          
+          if (value.length > 6) {
+            if (value.length <= 10) {
+              formattedValue = '(' + value.slice(0, 2) + ') ' + value.slice(2, 6) + '-' + value.slice(6);
+            } else {
+              formattedValue = '(' + value.slice(0, 2) + ') ' + value.slice(2, 7) + '-' + value.slice(7, 11);
+            }
+          }
+          
+          e.target.value = formattedValue;
+
+          if (value.length >= 10 && value.length <= 11) {
+            removeError(whatsInput);
+          }
+        });
+      }
 
       if (form) {
         form.addEventListener('submit', function (e) {
           e.preventDefault();
 
-          // Obter dados do formulário
-          const nome = document.getElementById('nome').value;
-          const email = document.getElementById('email').value;
-          const whats = document.getElementById('whats').value;
+          let isValid = true;
+          let firstInvalidInput = null;
+
+          // 1. Validate name
+          if (nomeInput) {
+            const nomeVal = nomeInput.value.trim();
+            if (!nomeVal) {
+              showError(nomeInput, 'O nome completo é obrigatório.');
+              isValid = false;
+              if (!firstInvalidInput) firstInvalidInput = nomeInput;
+            } else {
+              const nameParts = nomeVal.split(/\s+/).filter(part => part.length >= 2);
+              if (nameParts.length < 2) {
+                showError(nomeInput, 'Por favor, insira seu nome completo (nome e sobrenome).');
+                isValid = false;
+                if (!firstInvalidInput) firstInvalidInput = nomeInput;
+              } else {
+                removeError(nomeInput);
+              }
+            }
+          }
+
+          // 2. Validate email
+          if (emailInput) {
+            const emailVal = emailInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailVal) {
+              showError(emailInput, 'O e-mail é obrigatório.');
+              isValid = false;
+              if (!firstInvalidInput) firstInvalidInput = emailInput;
+            } else if (!emailRegex.test(emailVal)) {
+              showError(emailInput, 'Por favor, insira um e-mail válido.');
+              isValid = false;
+              if (!firstInvalidInput) firstInvalidInput = emailInput;
+            } else {
+              removeError(emailInput);
+            }
+          }
+
+          // 3. Validate WhatsApp
+          if (whatsInput) {
+            const whatsVal = whatsInput.value.trim();
+            const digits = whatsVal.replace(/\D/g, '');
+            if (!whatsVal) {
+              showError(whatsInput, 'O WhatsApp é obrigatório.');
+              isValid = false;
+              if (!firstInvalidInput) firstInvalidInput = whatsInput;
+            } else if (digits.length < 10 || digits.length > 11) {
+              showError(whatsInput, 'Por favor, insira um WhatsApp válido com DDD (10 ou 11 dígitos).');
+              isValid = false;
+              if (!firstInvalidInput) firstInvalidInput = whatsInput;
+            } else {
+              removeError(whatsInput);
+            }
+          }
+
+          if (!isValid) {
+            if (firstInvalidInput) {
+              firstInvalidInput.focus();
+            }
+            return;
+          }
+
+          const nome = nomeInput.value;
+          const email = emailInput.value;
+          const whats = whatsInput.value;
 
           // Capturar parâmetros UTM da URL
           const urlParams = new URLSearchParams(window.location.search);
