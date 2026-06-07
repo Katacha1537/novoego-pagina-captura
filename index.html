@@ -1098,9 +1098,36 @@
       },
     };
 
+    function getNextMondayDate() {
+      const now = new Date();
+      const dayOfWeek = now.getDay();
+      let daysToAdd = (1 - dayOfWeek + 7) % 7;
+      
+      // Se for segunda-feira e já passar das 20h, agenda para a próxima segunda
+      if (dayOfWeek === 1 && now.getHours() >= 20) {
+        daysToAdd = 7;
+      }
+      
+      const targetDate = new Date();
+      targetDate.setDate(now.getDate() + daysToAdd);
+      const isToday = daysToAdd === 0;
+      const day = String(targetDate.getDate()).padStart(2, '0');
+      
+      if (isToday) {
+        const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+        return `hoje, dia ${day}/${month}`;
+      } else {
+        const months = [
+          'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+          'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
+        ];
+        return `${day} de ${months[targetDate.getMonth()]}`;
+      }
+    }
+
     const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
       "angulo": "Ângulo 2, virada de chave",
-      "data": "12 de junho",
+      "data": "auto",
       "horario": "20h",
       "nome": "[Nome do Especialista]",
       "credencial": "psicanalista clínico",
@@ -1111,8 +1138,10 @@
       const ang = ANGLES[t.angulo] || ANGLES['Ângulo 2, virada de chave'];
       document.getElementById('headline').innerHTML = ang.h;
       document.getElementById('subheadline').textContent = ang.s;
-      document.getElementById('badge-text').textContent = 'Aula gratuita · ' + t.data + ' às ' + t.horario;
-      document.getElementById('when-text').textContent = 'Aula online e gratuita · ' + t.data + ' às ' + t.horario;
+      
+      const resolvedDate = t.data === 'auto' ? getNextMondayDate() : t.data;
+      document.getElementById('badge-text').textContent = 'Aula gratuita · ' + resolvedDate + ' às ' + t.horario;
+      document.getElementById('when-text').textContent = 'Aula online e gratuita · ' + resolvedDate + ' às ' + t.horario;
       
       const bioName = document.getElementById('bio-name');
       const bioCred = document.getElementById('bio-cred');
