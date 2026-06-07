@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Novo Ego — Button
+ * Novo Ego, Button
  * Three variants mapped to the brand's CTA hierarchy:
  *   primary   → gilt metallic sweep (the one decisive action)
  *   secondary → gold hairline outline on dark (alternative action)

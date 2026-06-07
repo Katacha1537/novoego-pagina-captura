@@ -1,11 +1,11 @@
 /* ============================================================
-   Novo Ego — Spacing, radius & layout tokens
+   Novo Ego, Spacing, radius & layout tokens
    Base unit = 4px. Layouts are airy and centered; whitespace
    is a feature (contemplative, confident, unhurried).
    ============================================================ */
 
 :root {
-  /* — Spacing scale (4px base) — */
+  /*, Spacing scale (4px base), */
   --space-1:  0.25rem;  /*  4 */
   --space-2:  0.5rem;   /*  8 */
   --space-3:  0.75rem;  /* 12 */
@@ -15,16 +15,16 @@
   --space-7:  3rem;     /* 48 */
   --space-8:  4rem;     /* 64 */
   --space-9:  6rem;     /* 96 */
-  --space-10: 8rem;     /* 128 — section rhythm on large screens */
+  --space-10: 8rem;     /* 128, section rhythm on large screens */
 
-  /* — Radii — generous & soft, never sharp — */
+  /*, Radii, generous & soft, never sharp, */
   --radius-sm:  8px;
   --radius-md:  12px;   /* default control / chip                 */
   --radius-lg:  18px;   /* cards                                  */
   --radius-xl:  28px;   /* large feature panels                   */
   --radius-pill: 999px; /* badges, eyebrow capsules, CTAs         */
 
-  /* — Layout — */
+  /*, Layout, */
   --container:    1200px;  /* max content width                   */
   --container-narrow: 760px; /* prose / centered hero copy        */
   --gutter:       clamp(1.25rem, 5vw, 4rem);

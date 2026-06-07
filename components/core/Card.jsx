@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Novo Ego — Card
+ * Novo Ego, Card
  * The base dark surface: warm ink fill, hairline border, top bevel + soft
  * cast shadow. `feature` adds a larger radius and a faint inner gold wash for
  * the headline panels ("Páginas de Venda Persuasivas" style blocks).

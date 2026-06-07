@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Novo Ego — Pill
+ * Novo Ego, Pill
  * The brand's signature eyebrow capsule: a hairline-bordered lozenge holding
  * an optional icon + tracked uppercase label. Used above headlines as a
  * section flag ("A NOVA CIÊNCIA DA MENTE", "ENTREGÁVEIS", "EQUIPE ESPECIALIZADA").
