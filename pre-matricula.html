@@ -1373,20 +1373,24 @@
         url: window.location.href
       };
 
-      // Send to Google Sheets
+      // Send to Google Sheets and wait for response before success screen
+      let sendPromise = Promise.resolve();
       if (GOOGLE_SHEETS_URL) {
-        fetch(GOOGLE_SHEETS_URL, {
+        sendPromise = fetch(GOOGLE_SHEETS_URL, {
           method: 'POST',
           mode: 'no-cors',
+          keepalive: true,
           headers: { 'Content-Type': 'text/plain' },
           body: JSON.stringify(payload)
         }).catch(err => console.error('Erro ao enviar:', err));
       }
 
-      // Show success after short delay
-      setTimeout(() => {
-        goToStep(TOTAL_STEPS + 1);
-      }, 800);
+      // Mostra a tela de sucesso após o envio concluir
+      sendPromise.finally(() => {
+        setTimeout(() => {
+          goToStep(TOTAL_STEPS + 1);
+        }, 200);
+      });
     }
   </script>
 </body>
