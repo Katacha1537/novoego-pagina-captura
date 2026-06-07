@@ -1,20 +1,20 @@
 /**
- * enviar-dados.gs
+ * enviar-formulario.gs
  * 
  * INSTRUÇÕES DE INSTALAÇÃO E USO:
- * 1. Abra a planilha do Google Sheets onde você deseja salvar os leads.
+ * 1. Abra a planilha do Google Sheets onde você deseja salvar as respostas do Formulário.
  * 2. No menu superior, clique em "Extensões" e depois em "Apps Script".
- * 3. Substitua todo o código existente por este código completo.
+ * 3. Crie um novo arquivo de script (ou substitua todo o código existente) e cole este código completo.
  * 4. Clique em salvar (ícone de disquete) ou use Ctrl+S.
  * 5. Clique no botão "Implantar" (canto superior direito) > "Nova implantação".
  * 6. Em "Selecionar tipo", clique no ícone de engrenagem e selecione "App da Web".
  * 7. Configure a implantação:
- *    - Descrição: "Integração Página de Captura Leads"
+ *    - Descrição: "Integração Formulário Pré-Matrícula"
  *    - Executar como: "Eu" (seu e-mail)
  *    - Quem tem acesso: "Qualquer pessoa" (MUITO IMPORTANTE para permitir que o site envie os dados sem autenticação)
  * 8. Clique em "Implantar". Se solicitado, clique em "Autorizar acesso", selecione sua conta do Google e depois clique em "Avançado" > "Acessar Projeto (não seguro)".
  * 9. Copie o URL do App da Web gerado (exemplo: https://script.google.com/macros/s/.../exec).
- * 10. Abra o arquivo "index.html" do seu site, vá na linha que possui a variável `GOOGLE_SHEETS_SCRIPT_URL` e cole a URL entre as aspas simples.
+ * 10. Abra o arquivo "pre-matricula.html" do seu site, vá na linha que possui a variável `GOOGLE_SHEETS_URL` e cole a URL entre as aspas simples.
  */
 
 function doPost(e) {
@@ -28,10 +28,10 @@ function doPost(e) {
   try {
     var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     
-    // Direciona especificamente para a aba "Pagina de Captura"
-    var sheet = spreadsheet.getSheetByName("Pagina de Captura");
+    // Direciona especificamente para a aba "Formulario"
+    var sheet = spreadsheet.getSheetByName("Formulario");
     if (!sheet) {
-      sheet = spreadsheet.insertSheet("Pagina de Captura");
+      sheet = spreadsheet.insertSheet("Formulario");
     }
     
     // Converte o corpo do POST (JSON string) para objeto JavaScript
@@ -39,15 +39,21 @@ function doPost(e) {
     
     // Cabeçalhos que serão criados automaticamente caso a planilha esteja vazia
     var columnHeaders = [
-      "Data e Hora", 
-      "Nome", 
-      "E-mail", 
-      "WhatsApp", 
-      "UTM Source", 
-      "UTM Medium", 
-      "UTM Campaign", 
-      "UTM Term", 
-      "UTM Content", 
+      "Data e Hora",
+      "Nome",
+      "WhatsApp",
+      "E-mail",
+      "Dificuldade",
+      "O que trouxe",
+      "Sessão Perfeita",
+      "O que impede",
+      "Investimento",
+      "Obstáculo",
+      "UTM Source",
+      "UTM Medium",
+      "UTM Campaign",
+      "UTM Term",
+      "UTM Content",
       "URL da Página"
     ];
     
@@ -66,8 +72,14 @@ function doPost(e) {
     var newRow = [
       timestamp,
       data.nome || "",
-      data.email || "",
       data.whats || "",
+      data.email || "",
+      data.dificuldade || "",
+      data.trouxe || "",
+      data.sessao_perfeita || "",
+      data.impede || "",
+      data.investir || "",
+      data.obstaculo || "",
       data.utm_source || "",
       data.utm_medium || "",
       data.utm_campaign || "",

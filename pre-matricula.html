@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Novo Ego · Pré-Matrícula — Formação em Psicanálise</title>
+  <meta name="description"
+    content="Preencha seus dados para liberar o link de pagamento da sua Pré-Matrícula na Formação em Psicanálise do Novo Ego.">
+  <link rel="icon" href="assets/monogram.svg">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg-deep);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: var(--leading-body);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    ::selection {
+      background: rgba(201, 168, 106, .28);
+      color: var(--sand-50);
+    }
+
+    a {
+      color: inherit;
+    }
+
+    /* ====== Layout ====== */
+    .page-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--gutter);
+      position: relative;
+    }
+
+    .page-wrap::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: var(--gradient-aura);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ====== Topbar ====== */
+    .topbar {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px var(--gutter);
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand img {
+      width: 36px;
+      height: 36px;
+    }
+
+    .brand .nm {
+      font-family: var(--font-statement);
+      font-weight: 500;
+      letter-spacing: .14em;
+      font-size: 16px;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    /* ====== Form Container ====== */
+    .form-container {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    /* ====== Progress Bar ====== */
+    .progress-wrap {
+      margin-bottom: var(--space-7);
+    }
+
+    .progress-info {
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .progress-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: .04em;
+    }
+
+    .progress-count {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 4px;
+      background: var(--ink-700);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--gradient-gold);
+      border-radius: var(--radius-pill);
+      transition: width 0.5s var(--ease-out);
+    }
+
+    /* ====== Step Card ====== */
+    .step {
+      display: none;
+      animation: stepIn 0.45s var(--ease-out);
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    @keyframes stepIn {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes stepOut {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      to {
+        opacity: 0;
+        transform: translateY(-16px);
+      }
+    }
+
+    .step.leaving {
+      display: block;
+      animation: stepOut 0.25s var(--ease-out) forwards;
+    }
+
+    /* ====== Intro (step 0) ====== */
+    .intro-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--bevel-top), var(--shadow-lg);
+      border-radius: var(--radius-xl);
+      padding: clamp(2rem, 4vw, 3rem);
+      text-align: center;
+    }
+
+    .intro-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 1px solid var(--border-accent);
+      background: rgba(201, 168, 106, .08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-bright);
+      margin: 0 auto var(--space-5);
+    }
+
+    .intro-icon svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .intro-card h1 {
+      font-family: var(--font-editorial);
+      font-weight: 600;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      line-height: 1.2;
+      margin: 0 0 var(--space-4);
+      color: var(--text);
+    }
+
+    .intro-card h1 em {
+      font-style: italic;
+      color: var(--accent-bright);
+    }
+
+    .intro-card .intro-desc {
+      font-size: 15px;
+      color: var(--text-soft);
+      line-height: 1.7;
+      margin: 0 0 var(--space-4);
+    }
+
+    .intro-card .guarantee {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: rgba(143, 168, 118, .08);
+      border: 1px solid rgba(143, 168, 118, .2);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      font-size: 13px;
+      color: var(--sand-200);
+      line-height: 1.6;
+      text-align: left;
+      margin-bottom: var(--space-6);
+    }
+
+    .guarantee svg {
+      width: 18px;
+      height: 18px;
+      color: var(--positive);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ====== Question Styling ====== */
+    .question-num {
+      display: none;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: .06em;
+      margin-bottom: 10px;
+    }
+
+    .question-title {
+      font-family: var(--font-editorial);
+      font-weight: 600;
+      font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+      line-height: 1.25;
+      margin: 0 0 var(--space-5);
+      color: var(--text);
+    }
+
+    .question-title .required {
+      color: var(--danger);
+      margin-left: 3px;
+    }
+
+    /* ====== Input Fields ====== */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 20px;
+    }
+
+    .field:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .field label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      background: var(--ink-700);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+      resize: none;
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: var(--text-dim);
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(201, 168, 106, .12);
+    }
+
+    .field input.error,
+    .field textarea.error {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(201, 106, 90, 0.15);
+    }
+
+    .error-msg {
+      font-size: 12px;
+      color: var(--danger);
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      animation: fieldErrorIn 0.2s ease-out;
+    }
+
+    @keyframes fieldErrorIn {
+      from {
+        opacity: 0;
+        transform: translateY(-4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ====== Radio / Choice Options ====== */
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: var(--space-5);
+    }
+
+    .choice {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      background: var(--ink-700);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: border-color var(--dur-fast), background var(--dur-fast), transform var(--dur-fast);
+      user-select: none;
+    }
+
+    .choice:hover {
+      border-color: rgba(201, 168, 106, .25);
+      background: rgba(38, 31, 26, .85);
+      transform: translateX(4px);
+    }
+
+    .choice.selected {
+      border-color: var(--accent);
+      background: rgba(201, 168, 106, .06);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+
+    .choice input[type="radio"] {
+      display: none;
+    }
+
+    .choice-indicator {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      background: transparent;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color var(--dur-fast), background var(--dur-fast);
+    }
+
+    .choice.selected .choice-indicator {
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+
+    .choice-indicator::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--ink-950);
+      opacity: 0;
+      transform: scale(0);
+      transition: opacity var(--dur-fast), transform var(--dur-fast);
+    }
+
+    .choice.selected .choice-indicator::after {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .choice-label {
+      font-size: 15px;
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+
+    .choice.selected .choice-label {
+      color: var(--text);
+    }
+
+    .choice-key {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-dim);
+      background: var(--ink-600);
+      padding: 3px 7px;
+      border-radius: 5px;
+      letter-spacing: .03em;
+      opacity: 0.6;
+      transition: opacity var(--dur-fast);
+    }
+
+    .choice:hover .choice-key {
+      opacity: 1;
+    }
+
+    /* "Outro" open text */
+    .outro-field {
+      margin-top: 10px;
+      display: none;
+    }
+
+    .outro-field.visible {
+      display: block;
+    }
+
+    .outro-field input {
+      width: 100%;
+      background: var(--ink-700);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+    }
+
+    .outro-field input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(201, 168, 106, .12);
+    }
+
+    /* ====== Navigation Buttons ====== */
+    .step-nav {
+      display: flex;
+      gap: 12px;
+      margin-top: var(--space-6);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6em;
+      padding: 16px 30px;
+      font-family: var(--font-sans);
+      font-size: .8125rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      border-radius: var(--radius-pill);
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      line-height: 1;
+      transition: transform var(--dur-fast) var(--ease-out), background var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out), opacity var(--dur-base);
+    }
+
+    .btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .btn.primary {
+      background: var(--gradient-gold);
+      color: #2A1F0C;
+      box-shadow: var(--glow-gold);
+    }
+
+    .btn.primary:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn.primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn.secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    .btn.secondary:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    .btn.full {
+      width: 100%;
+    }
+
+    .btn.lg {
+      padding: 18px 36px;
+      font-size: .875rem;
+    }
+
+    /* Enter hint */
+    .enter-hint {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 14px;
+    }
+
+    .enter-hint kbd {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      background: var(--ink-600);
+      padding: 2px 8px;
+      border-radius: 5px;
+      color: var(--text-muted);
+    }
+
+    /* ====== Success State ====== */
+    .success-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--bevel-top), var(--shadow-lg);
+      border-radius: var(--radius-xl);
+      padding: clamp(2rem, 4vw, 3rem);
+      text-align: center;
+      display: none;
+    }
+
+    .success-card.active {
+      display: block;
+      animation: stepIn 0.45s var(--ease-out);
+    }
+
+    .success-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 1px solid var(--border-accent);
+      background: rgba(201, 168, 106, .08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-bright);
+      margin: 0 auto var(--space-5);
+    }
+
+    .success-icon svg {
+      width: 34px;
+      height: 34px;
+    }
+
+    .success-card h2 {
+      font-family: var(--font-editorial);
+      font-weight: 600;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      margin: 0 0 12px;
+      line-height: 1.2;
+      color: var(--text);
+    }
+
+    .success-card p {
+      font-size: 15px;
+      color: var(--text-soft);
+      line-height: 1.7;
+      margin: 0 0 var(--space-5);
+    }
+
+    .confetti-burst {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* ====== Footer ====== */
+    footer {
+      position: relative;
+      z-index: 2;
+      padding: var(--space-6) 0;
+      text-align: center;
+      border-top: 1px solid var(--border-soft);
+    }
+
+    footer p {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: .03em;
+      line-height: 1.7;
+      margin: 0;
+      padding: 0 var(--gutter);
+    }
+
+    /* ====== Responsive ====== */
+    @media (max-width: 640px) {
+      .intro-card {
+        padding: 24px 20px;
+      }
+
+      .choice-key {
+        display: none;
+      }
+
+      .step-nav {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ====== TOPBAR ====== -->
+  <div class="topbar">
+    <a href="index.html" class="brand">
+      <img src="assets/monogram.svg" alt="Novo Ego">
+      <span class="nm">Novo Ego</span>
+    </a>
+  </div>
+
+  <!-- ====== MAIN ====== -->
+  <div class="page-wrap">
+    <div class="form-container">
+
+      <!-- Progress -->
+      <div class="progress-wrap" id="progress-wrap" style="display: none;">
+        <div class="progress-info">
+          <span class="progress-label" id="progress-label">Etapa 1 de 7</span>
+          <span class="progress-count" id="progress-count">14%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill" style="width: 14%;"></div>
+        </div>
+      </div>
+
+      <!-- ======== STEP 0: Intro ======== -->
+      <div class="step active" id="step-0">
+        <div class="intro-card">
+          <div class="intro-icon"><i data-lucide="clipboard-check"></i></div>
+          <h1>Libere o link da sua <em>Pré-Matrícula</em></h1>
+          <p class="intro-desc">Preencha os dados abaixo para liberar o link de pagamento da sua Pré-Matrícula na
+            Formação em Psicanálise.</p>
+          <div class="guarantee">
+            <i data-lucide="shield-check"></i>
+            <span>Se você não for selecionado ou decidir não entrar na Formação, nós devolvemos <b
+                style="color:var(--text)">100% do seu dinheiro</b> imediatamente, sem burocracia.</span>
+          </div>
+          <button class="btn primary full lg" id="start-btn" type="button">Começar <i
+              data-lucide="arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- ======== STEP 1: Dados pessoais ======== -->
+      <div class="step" id="step-1">
+        <div class="question-num">01 / 07</div>
+        <div class="question-title">Seus dados <span class="required">*</span></div>
+        <div class="field">
+          <label for="pm-nome">Nome completo</label>
+          <input id="pm-nome" name="nome" type="text" placeholder="Seu nome completo" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="pm-whats">WhatsApp com DDD</label>
+          <input id="pm-whats" name="whats" type="tel" placeholder="(11) 90000-0000" autocomplete="tel" required>
+        </div>
+        <div class="field">
+          <label for="pm-email">E-mail</label>
+          <input id="pm-email" name="email" type="email" placeholder="voce@email.com" autocomplete="email" required>
+        </div>
+        <div class="step-nav">
+          <button class="btn primary full lg" type="button" onclick="nextStep()">Continuar <i
+              data-lucide="arrow-right"></i></button>
+        </div>
+        <div class="enter-hint"><kbd>Enter ↵</kbd> para continuar</div>
+      </div>
+
+      <!-- ======== STEP 2: Dificuldade ======== -->
+      <div class="step" id="step-2">
+        <div class="question-num">02 / 07</div>
+        <div class="question-title">Qual é a sua maior dificuldade atual em relação à Dependência Emocional? Ou algum
+          outro assunto? <span class="required">*</span></div>
+        <div class="field">
+          <textarea id="pm-dificuldade" name="dificuldade" rows="5" placeholder="Escreva livremente aqui..."
+            required></textarea>
+        </div>
+        <div class="step-nav">
+          <button class="btn secondary" type="button" onclick="prevStep()"><i data-lucide="arrow-left"></i>
+            Voltar</button>
+          <button class="btn primary full lg" type="button" onclick="nextStep()">Continuar <i
+              data-lucide="arrow-right"></i></button>
+        </div>
+        <div class="enter-hint"><kbd>Enter ↵</kbd> para continuar</div>
+      </div>
+
+      <!-- ======== STEP 3: O que te trouxe ======== -->
+      <div class="step" id="step-3">
+        <div class="question-num">03 / 07</div>
+        <div class="question-title">O que te trouxe até aqui? <span class="required">*</span></div>
+        <div class="choices" id="choices-trouxe">
+          <label class="choice" data-key="A">
+            <input type="radio" name="trouxe"
+              value="Estou passando por uma relação de dependência emocional e quero me entender melhor">
+            <span class="choice-indicator"></span>
+            <span class="choice-label">Estou passando por uma relação de dependência emocional e quero me entender
+              melhor</span>
+            <span class="choice-key">A</span>
+          </label>
+          <label class="choice" data-key="B">
+            <input type="radio" name="trouxe"
+              value="Quero me curar e, ao mesmo tempo, estudo a possibilidade de me formar na área">
+            <span class="choice-indicator"></span>
+            <span class="choice-label">Quero me curar e, ao mesmo tempo, estudo a possibilidade de me formar na
+              área</span>
+            <span class="choice-key">B</span>
+          </label>
+          <label class="choice" data-key="C">
+            <input type="radio" name="trouxe"
+              value="Já sei que quero me formar — e a dependência emocional é o tema que mais me move">
+            <span class="choice-indicator"></span>
+            <span class="choice-label">Já sei que quero me formar — e a dependência emocional é o tema que mais me
+              move</span>
+            <span class="choice-key">C</span>
+          </label>
+          <label class="choice" data-key="D">
+            <input type="radio" name="trouxe"
+              value="Quero ajudar pessoas próximas que sofrem com isso e sinto que preciso de mais conhecimento">
+            <span class="choice-indicator"></span>
+            <span class="choice-label">Quero ajudar pessoas próximas que sofrem com isso e sinto que preciso de mais
+              conhecimento</span>
+            <span class="choice-key">D</span>
+          </label>
+          <label class="choice" data-key="E">
+            <input type="radio" name="trouxe" value="Outro">
+            <span class="choice-indicator"></span>
+            <span class="choice-label">Outro</span>
+            <span class="choice-key">E</span>
+          </label>
+        </div>
+        <div class="outro-field" id="outro-trouxe">
+          <input type="text" id="pm-trouxe-outro" placeholder="Descreva aqui...">
+        </div>
+        <div class="step-nav">
+          <button class="btn secondary" type="button" onclick="prevStep()"><i data-lucide="arrow-left"></i>
+            Voltar</button>
+          <button class="btn primary full lg" type="button" onclick="nextStep()">Continuar <i
+              data-lucide="arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- ======== STEP 4: Sessão perfeita ======== -->
+      <div class="step" id="step-4">
+        <div class="question-num">04 / 07</div>
+        <div class="question-title">Se essa sessão fosse perfeita — e você saísse dela com uma clareza que não tem hoje
+          — o que teria mudado para você? <span class="required">*</span></div>
+        <div class="field">
+          <textarea id="pm-sessao" name="sessao" rows="5" placeholder="Escreva livremente aqui..." required></textarea>
+        </div>
+        <div class="step-nav">
+          <button class="btn secondary" type="button" onclick="prevStep()"><i data-lucide="arrow-left"></i>
+            Voltar</button>
+          <button class="btn primary full lg" type="button" onclick="nextStep()">Continuar <i
+              data-lucide="arrow-right"></i></button>
+        </div>
+        <div class="enter-hint"><kbd>Enter ↵</kbd> para continuar</div>
+      </div>
+
+      <!-- ======== STEP 5: Impedimentos ======== -->
+      <div class="step" id="step-5">
+        <div class="question-num">05 / 07</div>
+        <div class="question-title">O que te impede de agir em direção a essa mudança agora? <span
+            class="required">*</span></div>
+        <div class="choices" id="choices-impede">
+          <label class="choice" data-key="A">
+            <input type="radio" name="impede" value="Não sei exatamente o que fazer ou por onde começar">
+            <span class="choice-indicator"></span>
+            <span class="choice-label">Não sei exatamente o que fazer ou por onde começar</span>
+            <span class="choice-key">A</span>
+          </label>
+          <label class="choice" data-key="B">
+            <input type="radio" name="impede" value="Tenho medo de investir e não conseguir terminar">
+            <span class="choice-indicator"></span>
+            <span class="choice-label">Tenho medo de investir e não conseguir terminar</span>
+            <span class="choice-key">B</span>
+          </label>
+          <label class="choice" data-key="C">
+            <input type="radio" name="impede" value="Questões financeiras">
+            <span class="choice-indicator"></span>
+            <span class="choice-label">Questões financeiras</span>
+            <span class="choice-key">C</span>
+          </label>
+          <label class="choice" data-key="D">
+            <input type="radio" name="impede" value="Falta de tempo">
+            <span class="choice-indicator"></span>
+            <span class="choice-label">Falta de tempo</span>
+            <span class="choice-key">D</span>
+          </label>
+          <label class="choice" data-key="E">
+            <input type="radio" name="impede" value="Ainda não tenho certeza se isso é para mim">
+            <span class="choice-indicator"></span>
+            <span class="choice-label">Ainda não tenho certeza se isso é para mim</span>
+            <span class="choice-key">E</span>
+          </label>
+          <label class="choice" data-key="F">
+            <input type="radio" name="impede" value="Outro">
+            <span class="choice-indicator"></span>
+            <span class="choice-label">Outro</span>
+            <span class="choice-key">F</span>
+          </label>
+        </div>
+        <div class="outro-field" id="outro-impede">
+          <input type="text" id="pm-impede-outro" placeholder="Descreva aqui...">
+        </div>
+        <div class="step-nav">
+          <button class="btn secondary" type="button" onclick="prevStep()"><i data-lucide="arrow-left"></i>
+            Voltar</button>
+          <button class="btn primary full lg" type="button" onclick="nextStep()">Continuar <i
+              data-lucide="arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- ======== STEP 6: Disponibilidade investir ======== -->
+      <div class="step" id="step-6">
+        <div class="question-num">06 / 07</div>
+        <div class="question-title">Você tem disponibilidade de investir em uma formação agora, se fizer sentido? <span
+            class="required">*</span></div>
+        <div class="choices" id="choices-investir">
+          <label class="choice" data-key="A">
+            <input type="radio" name="investir" value="Sim, tenho reserva para isso">
+            <span class="choice-indicator"></span>
+            <span class="choice-label">Sim, tenho reserva para isso</span>
+            <span class="choice-key">A</span>
+          </label>
+          <label class="choice" data-key="B">
+            <input type="radio" name="investir" value="Tenho, mas precisaria de parcelamento">
+            <span class="choice-indicator"></span>
+            <span class="choice-label">Tenho, mas precisaria de parcelamento</span>
+            <span class="choice-key">B</span>
+          </label>
+          <label class="choice" data-key="C">
+            <input type="radio" name="investir" value="Ainda não, mas estou planejando">
+            <span class="choice-indicator"></span>
+            <span class="choice-label">Ainda não, mas estou planejando</span>
+            <span class="choice-key">C</span>
+          </label>
+        </div>
+        <div class="step-nav">
+          <button class="btn secondary" type="button" onclick="prevStep()"><i data-lucide="arrow-left"></i>
+            Voltar</button>
+          <button class="btn primary full lg" type="button" onclick="nextStep()">Continuar <i
+              data-lucide="arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- ======== STEP 7: Obstáculo real ======== -->
+      <div class="step" id="step-7">
+        <div class="question-num">07 / 07</div>
+        <div class="question-title">Se você decidisse começar uma formação hoje, qual seria o maior obstáculo real?
+          <span class="required">*</span>
+        </div>
+        <div class="choices" id="choices-obstaculo">
+          <label class="choice" data-key="A">
+            <input type="radio" name="obstaculo" value="Encaixar no orçamento do mês">
+            <span class="choice-indicator"></span>
+            <span class="choice-label">Encaixar no orçamento do mês</span>
+            <span class="choice-key">A</span>
+          </label>
+          <label class="choice" data-key="B">
+            <input type="radio" name="obstaculo" value="Precisaria reorganizar as finanças, mas é possível">
+            <span class="choice-indicator"></span>
+            <span class="choice-label">Precisaria reorganizar as finanças, mas é possível</span>
+            <span class="choice-key">B</span>
+          </label>
+          <label class="choice" data-key="C">
+            <input type="radio" name="obstaculo" value="Financeiramente não seria o problema principal">
+            <span class="choice-indicator"></span>
+            <span class="choice-label">Financeiramente não seria o problema principal</span>
+            <span class="choice-key">C</span>
+          </label>
+          <label class="choice" data-key="D">
+            <input type="radio" name="obstaculo" value="Prefiro não responder agora">
+            <span class="choice-indicator"></span>
+            <span class="choice-label">Prefiro não responder agora</span>
+            <span class="choice-key">D</span>
+          </label>
+        </div>
+        <div class="step-nav">
+          <button class="btn secondary" type="button" onclick="prevStep()"><i data-lucide="arrow-left"></i>
+            Voltar</button>
+          <button class="btn primary full lg" type="button" id="submit-btn" onclick="submitForm()">Enviar e liberar link
+            <i data-lucide="send"></i></button>
+        </div>
+      </div>
+
+      <!-- ======== SUCCESS ======== -->
+      <div class="success-card" id="success-card">
+        <div class="success-icon"><i data-lucide="check-circle-2"></i></div>
+        <h2>Pré-Matrícula enviada!</h2>
+        <p>Seus dados foram recebidos com sucesso. Você está sendo redirecionado para o checkout de pagamento...</p>
+        <a class="btn primary full lg" href="https://www.asaas.com/c/za0e066ozu392jar" id="checkout-link">
+          <i data-lucide="credit-card"></i> Ir para o pagamento
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ====== FOOTER ====== -->
+  <footer>
+    <p>Novo Ego · Formação em Psicanálise · A nova ciência da mente<br>Este conteúdo é educativo e não substitui
+      acompanhamento profissional individual.</p>
+  </footer>
+
+  <!-- ====== SCRIPTS ====== -->
+  <script>
+    // ── Config ──
+    const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxwQziweXnaYWNFVwNqlsTqDun9k9YNQckVSSFBhD-TlYchwFTXpsibecUsrqB03mkKLg/exec';
+    const TOTAL_STEPS = 7;
+    let currentStep = 0;
+
+    // ── DOM refs ──
+    const progressWrap = document.getElementById('progress-wrap');
+    const progressLabel = document.getElementById('progress-label');
+    const progressCount = document.getElementById('progress-count');
+    const progressFill = document.getElementById('progress-fill');
+
+    // ── Init Lucide ──
+    lucide.createIcons();
+
+    // ── WhatsApp mask ──
+    const whatsInput = document.getElementById('pm-whats');
+    if (whatsInput) {
+      whatsInput.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 11) value = value.slice(0, 11);
+
+        let formatted = '';
+        if (value.length > 0) formatted += '(' + value.slice(0, 2);
+        if (value.length > 2) formatted += ') ';
+        if (value.length > 6) {
+          if (value.length <= 10) {
+            formatted += value.slice(2, 6) + '-' + value.slice(6);
+          } else {
+            formatted += value.slice(2, 7) + '-' + value.slice(7, 11);
+          }
+        } else if (value.length > 2) {
+          formatted += value.slice(2);
+        }
+
+        e.target.value = formatted;
+      });
+    }
+
+    // ── Choice radio auto-advance ──
+    document.querySelectorAll('.choices').forEach(group => {
+      group.querySelectorAll('.choice').forEach(choice => {
+        choice.addEventListener('click', function () {
+          const radio = this.querySelector('input[type="radio"]');
+          const name = radio.name;
+
+          // Clear other selections
+          group.querySelectorAll('.choice').forEach(c => c.classList.remove('selected'));
+          this.classList.add('selected');
+          radio.checked = true;
+
+          // Show/hide "Outro" field
+          const outroField = document.getElementById('outro-' + name.replace('trouxe', 'trouxe').replace('impede', 'impede'));
+          if (outroField) {
+            if (radio.value === 'Outro') {
+              outroField.classList.add('visible');
+              const outroInput = outroField.querySelector('input');
+              if (outroInput) setTimeout(() => outroInput.focus(), 100);
+            } else {
+              outroField.classList.remove('visible');
+            }
+          }
+
+          // Auto-advance after a brief delay (unless "Outro")
+          if (radio.value !== 'Outro') {
+            setTimeout(() => nextStep(), 400);
+          }
+        });
+      });
+    });
+
+    // ── Keyboard shortcuts ──
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        const activeEl = document.activeElement;
+        if (activeEl && activeEl.tagName === 'TEXTAREA') return;
+        e.preventDefault();
+        if (currentStep === 0) {
+          goToStep(1);
+        } else if (currentStep <= TOTAL_STEPS) {
+          nextStep();
+        }
+      }
+
+      // Letter keys for choices
+      if (currentStep >= 1 && currentStep <= TOTAL_STEPS) {
+        const stepEl = document.getElementById('step-' + currentStep);
+        if (!stepEl) return;
+        const choices = stepEl.querySelectorAll('.choice');
+        if (choices.length === 0) return;
+
+        const key = e.key.toUpperCase();
+        const letterIndex = key.charCodeAt(0) - 65; // A=0, B=1, etc.
+        if (letterIndex >= 0 && letterIndex < choices.length) {
+          choices[letterIndex].click();
+        }
+      }
+    });
+
+    // ── Start button ──
+    document.getElementById('start-btn').addEventListener('click', () => goToStep(1));
+
+    // ── Step navigation ──
+    function goToStep(step) {
+      const current = document.getElementById('step-' + currentStep);
+      const next = document.getElementById('step-' + step);
+      const success = document.getElementById('success-card');
+
+      if (!next && step > TOTAL_STEPS) {
+        // Remove active/leaving de todos os steps para evitar bugs visuais
+        document.querySelectorAll('.step').forEach(el => {
+          el.classList.remove('active', 'leaving');
+        });
+
+        // Show success
+        setTimeout(() => {
+          success.classList.add('active');
+          lucide.createIcons();
+
+          // Redireciona automaticamente para o checkout de pré-matrícula após 2 segundos
+          setTimeout(() => {
+            window.location.href = 'https://www.asaas.com/c/za0e066ozu392jar';
+          }, 2000);
+        }, 260);
+        progressWrap.style.display = 'none';
+        return;
+      }
+
+      if (!next) return;
+
+      // Animate out current
+      if (current) {
+        current.classList.remove('active');
+        current.classList.add('leaving');
+        const tempCurrent = current;
+        setTimeout(() => tempCurrent.classList.remove('leaving'), 250);
+      }
+
+      // Animate in next
+      setTimeout(() => {
+        // Garante que nenhum outro step além do próximo tenha classes residuais
+        document.querySelectorAll('.step').forEach(el => {
+          if (el.id !== 'step-' + step) {
+            el.classList.remove('active', 'leaving');
+          }
+        });
+
+        next.classList.add('active');
+        lucide.createIcons();
+
+        // Focus first input in the new step
+        const firstInput = next.querySelector('input:not([type="radio"]), textarea');
+        if (firstInput) setTimeout(() => firstInput.focus(), 100);
+      }, 260);
+
+      currentStep = step;
+      updateProgress();
+    }
+
+    function nextStep() {
+      if (!validateStep(currentStep)) return;
+      goToStep(currentStep + 1);
+    }
+
+    function prevStep() {
+      if (currentStep > 1) goToStep(currentStep - 1);
+    }
+
+    function updateProgress() {
+      if (currentStep === 0) {
+        progressWrap.style.display = 'none';
+        return;
+      }
+      progressWrap.style.display = 'block';
+      const pct = Math.round((currentStep / TOTAL_STEPS) * 100);
+      progressLabel.textContent = `Etapa ${currentStep} de ${TOTAL_STEPS}`;
+      progressCount.textContent = `${pct}%`;
+      progressFill.style.width = pct + '%';
+    }
+
+    // ── Validation ──
+    function showError(el, msg) {
+      el.classList.add('error');
+      removeError(el);
+      const err = document.createElement('div');
+      err.className = 'error-msg';
+      err.innerHTML = `<i data-lucide="alert-circle" style="width:14px;height:14px;flex-shrink:0;"></i><span>${msg}</span>`;
+      el.parentNode.appendChild(err);
+      lucide.createIcons();
+    }
+
+    function removeError(el) {
+      el.classList.remove('error');
+      const parent = el.parentNode;
+      const msg = parent.querySelector('.error-msg');
+      if (msg) msg.remove();
+    }
+
+    // Live removal of errors
+    document.querySelectorAll('input, textarea').forEach(el => {
+      el.addEventListener('input', () => removeError(el));
+    });
+
+    function validateStep(step) {
+      if (step === 1) {
+        let valid = true;
+        const nome = document.getElementById('pm-nome');
+        const whats = document.getElementById('pm-whats');
+        const email = document.getElementById('pm-email');
+        let firstInvalid = null;
+
+        // Nome
+        const nomeVal = nome.value.trim();
+        if (!nomeVal) {
+          showError(nome, 'O nome completo é obrigatório.');
+          valid = false;
+          if (!firstInvalid) firstInvalid = nome;
+        } else {
+          const parts = nomeVal.split(/\s+/).filter(p => p.length >= 2);
+          if (parts.length < 2) {
+            showError(nome, 'Por favor, insira nome e sobrenome.');
+            valid = false;
+            if (!firstInvalid) firstInvalid = nome;
+          } else {
+            removeError(nome);
+          }
+        }
+
+        // WhatsApp
+        const whatsVal = whats.value.trim();
+        const digits = whatsVal.replace(/\D/g, '');
+        if (!whatsVal) {
+          showError(whats, 'O WhatsApp é obrigatório.');
+          valid = false;
+          if (!firstInvalid) firstInvalid = whats;
+        } else if (digits.length < 10 || digits.length > 11) {
+          showError(whats, 'Insira um WhatsApp válido com DDD.');
+          valid = false;
+          if (!firstInvalid) firstInvalid = whats;
+        } else {
+          removeError(whats);
+        }
+
+        // Email
+        const emailVal = email.value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailVal) {
+          showError(email, 'O e-mail é obrigatório.');
+          valid = false;
+          if (!firstInvalid) firstInvalid = email;
+        } else if (!emailRegex.test(emailVal)) {
+          showError(email, 'Insira um e-mail válido.');
+          valid = false;
+          if (!firstInvalid) firstInvalid = email;
+        } else {
+          removeError(email);
+        }
+
+        if (firstInvalid) firstInvalid.focus();
+        return valid;
+      }
+
+      if (step === 2) {
+        const el = document.getElementById('pm-dificuldade');
+        if (!el.value.trim()) {
+          showError(el, 'Por favor, compartilhe sua dificuldade.');
+          el.focus();
+          return false;
+        }
+        removeError(el);
+        return true;
+      }
+
+      if (step === 3) {
+        const checked = document.querySelector('input[name="trouxe"]:checked');
+        if (!checked) {
+          // Briefly highlight choices
+          const group = document.getElementById('choices-trouxe');
+          group.style.outline = '2px solid var(--danger)';
+          group.style.borderRadius = 'var(--radius-md)';
+          setTimeout(() => { group.style.outline = 'none'; }, 1500);
+          return false;
+        }
+        if (checked.value === 'Outro') {
+          const outroVal = document.getElementById('pm-trouxe-outro').value.trim();
+          if (!outroVal) {
+            const outroInput = document.getElementById('pm-trouxe-outro');
+            outroInput.style.borderColor = 'var(--danger)';
+            outroInput.focus();
+            setTimeout(() => { outroInput.style.borderColor = ''; }, 1500);
+            return false;
+          }
+        }
+        return true;
+      }
+
+      if (step === 4) {
+        const el = document.getElementById('pm-sessao');
+        if (!el.value.trim()) {
+          showError(el, 'Por favor, compartilhe sua resposta.');
+          el.focus();
+          return false;
+        }
+        removeError(el);
+        return true;
+      }
+
+      if (step === 5) {
+        const checked = document.querySelector('input[name="impede"]:checked');
+        if (!checked) {
+          const group = document.getElementById('choices-impede');
+          group.style.outline = '2px solid var(--danger)';
+          group.style.borderRadius = 'var(--radius-md)';
+          setTimeout(() => { group.style.outline = 'none'; }, 1500);
+          return false;
+        }
+        if (checked.value === 'Outro') {
+          const outroVal = document.getElementById('pm-impede-outro').value.trim();
+          if (!outroVal) {
+            const outroInput = document.getElementById('pm-impede-outro');
+            outroInput.style.borderColor = 'var(--danger)';
+            outroInput.focus();
+            setTimeout(() => { outroInput.style.borderColor = ''; }, 1500);
+            return false;
+          }
+        }
+        return true;
+      }
+
+      if (step === 6) {
+        const checked = document.querySelector('input[name="investir"]:checked');
+        if (!checked) {
+          const group = document.getElementById('choices-investir');
+          group.style.outline = '2px solid var(--danger)';
+          group.style.borderRadius = 'var(--radius-md)';
+          setTimeout(() => { group.style.outline = 'none'; }, 1500);
+          return false;
+        }
+        return true;
+      }
+
+      if (step === 7) {
+        const checked = document.querySelector('input[name="obstaculo"]:checked');
+        if (!checked) {
+          const group = document.getElementById('choices-obstaculo');
+          group.style.outline = '2px solid var(--danger)';
+          group.style.borderRadius = 'var(--radius-md)';
+          setTimeout(() => { group.style.outline = 'none'; }, 1500);
+          return false;
+        }
+        return true;
+      }
+
+      return true;
+    }
+
+    // ── Submit ──
+    function submitForm() {
+      if (!validateStep(currentStep)) return;
+
+      const submitBtn = document.getElementById('submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i data-lucide="loader-2" style="animation: spin 1s linear infinite;"></i> Enviando...';
+      lucide.createIcons();
+
+      // Add spinner animation
+      const style = document.createElement('style');
+      style.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
+      document.head.appendChild(style);
+
+      const trouxeChecked = document.querySelector('input[name="trouxe"]:checked');
+      let trouxeVal = trouxeChecked ? trouxeChecked.value : '';
+      if (trouxeVal === 'Outro') {
+        trouxeVal = 'Outro: ' + (document.getElementById('pm-trouxe-outro').value.trim() || '');
+      }
+
+      const impedeChecked = document.querySelector('input[name="impede"]:checked');
+      let impedeVal = impedeChecked ? impedeChecked.value : '';
+      if (impedeVal === 'Outro') {
+        impedeVal = 'Outro: ' + (document.getElementById('pm-impede-outro').value.trim() || '');
+      }
+
+      const investirChecked = document.querySelector('input[name="investir"]:checked');
+      const obstaculoChecked = document.querySelector('input[name="obstaculo"]:checked');
+
+      const urlParams = new URLSearchParams(window.location.search);
+
+      const payload = {
+        tipo: 'pre-matricula',
+        nome: document.getElementById('pm-nome').value.trim(),
+        whats: document.getElementById('pm-whats').value.trim(),
+        email: document.getElementById('pm-email').value.trim(),
+        dificuldade: document.getElementById('pm-dificuldade').value.trim(),
+        trouxe: trouxeVal,
+        sessao_perfeita: document.getElementById('pm-sessao').value.trim(),
+        impede: impedeVal,
+        investir: investirChecked ? investirChecked.value : '',
+        obstaculo: obstaculoChecked ? obstaculoChecked.value : '',
+        utm_source: urlParams.get('utm_source') || '',
+        utm_medium: urlParams.get('utm_medium') || '',
+        utm_campaign: urlParams.get('utm_campaign') || '',
+        utm_term: urlParams.get('utm_term') || '',
+        utm_content: urlParams.get('utm_content') || '',
+        url: window.location.href
+      };
+
+      // Send to Google Sheets
+      if (GOOGLE_SHEETS_URL) {
+        fetch(GOOGLE_SHEETS_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify(payload)
+        }).catch(err => console.error('Erro ao enviar:', err));
+      }
+
+      // Show success after short delay
+      setTimeout(() => {
+        goToStep(TOTAL_STEPS + 1);
+      }, 800);
+    }
+  </script>
+</body>
+
+</html>
