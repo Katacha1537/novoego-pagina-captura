@@ -1,22 +1,3 @@
-/**
- * enviar-formulario.gs
- * 
- * INSTRUÇÕES DE INSTALAÇÃO E USO:
- * 1. Abra a planilha do Google Sheets onde você deseja salvar as respostas do Formulário.
- * 2. No menu superior, clique em "Extensões" e depois em "Apps Script".
- * 3. Crie um novo arquivo de script (ou substitua todo o código existente) e cole este código completo.
- * 4. Clique em salvar (ícone de disquete) ou use Ctrl+S.
- * 5. Clique no botão "Implantar" (canto superior direito) > "Nova implantação".
- * 6. Em "Selecionar tipo", clique no ícone de engrenagem e selecione "App da Web".
- * 7. Configure a implantação:
- *    - Descrição: "Integração Formulário Pré-Matrícula"
- *    - Executar como: "Eu" (seu e-mail)
- *    - Quem tem acesso: "Qualquer pessoa" (MUITO IMPORTANTE para permitir que o site envie os dados sem autenticação)
- * 8. Clique em "Implantar". Se solicitado, clique em "Autorizar acesso", selecione sua conta do Google e depois clique em "Avançado" > "Acessar Projeto (não seguro)".
- * 9. Copie o URL do App da Web gerado (exemplo: https://script.google.com/macros/s/.../exec).
- * 10. Abra o arquivo "pre-matricula.html" do seu site, vá na linha que possui a variável `GOOGLE_SHEETS_URL` e cole a URL entre as aspas simples.
- */
-
 function doPost(e) {
   // Configuração de CORS para responder requisições do site
   var headers = {
@@ -26,13 +7,7 @@ function doPost(e) {
   };
   
   try {
-    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    
-    // Direciona especificamente para a aba "Formulario"
-    var sheet = spreadsheet.getSheetByName("Formulario");
-    if (!sheet) {
-      sheet = spreadsheet.insertSheet("Formulario");
-    }
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     
     // Converte o corpo do POST (JSON string) para objeto JavaScript
     var data = JSON.parse(e.postData.contents);

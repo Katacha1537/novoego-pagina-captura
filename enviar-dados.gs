@@ -6,144 +6,69 @@ function doPost(e) {
     "Access-Control-Allow-Headers": "Content-Type"
   };
   
-  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  
-  // FUNÇÃO AUXILIAR DE LOG (Cria uma aba Debug na planilha para capturar erros e requisições)
-  function logDebug(tag, message, details) {
-    try {
-      var debugSheet = spreadsheet.getSheetByName("Debug");
-      if (!debugSheet) {
-        debugSheet = spreadsheet.insertSheet("Debug");
-        debugSheet.appendRow(["Data e Hora", "Tag", "Mensagem", "Detalhes"]);
-        debugSheet.getRange(1, 1, 1, 4).setFontWeight("bold");
-      }
-      debugSheet.appendRow([new Date(), tag, message, details || ""]);
-    } catch (err) {}
-  }
-
   try {
-    var contents = e && e.postData ? e.postData.contents : null;
-    logDebug("Recebido", "Requisição recebida", contents);
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     
-    if (!contents) {
-      throw new Error("Corpo da requisição (postData) está vazio.");
-    }
+    // Converte o corpo do POST (JSON string) para objeto JavaScript
+    var data = JSON.parse(e.postData.contents);
     
-    var data = JSON.parse(contents);
-    var timestamp = new Date();
+    // Cabeçalhos que serão criados automaticamente caso a planilha esteja vazia
+    var columnHeaders = [
+      "Data e Hora", 
+      "Nome", 
+      "E-mail", 
+      "WhatsApp", 
+      "UTM Source", 
+      "UTM Medium", 
+      "UTM Campaign", 
+      "UTM Term", 
+      "UTM Content", 
+      "URL da Página"
+    ];
     
-    var sheet;
-    var columnHeaders;
-    var newRow;
-    
-    // Roteamento inteligente baseado no tipo de formulário enviado
-    if (data.tipo === 'pre-matricula') {
-      logDebug("Roteamento", "Identificado como pre-matricula", data.tipo);
-      
-      sheet = spreadsheet.getSheetByName("Formulario");
-      if (!sheet) {
-        sheet = spreadsheet.insertSheet("Formulario");
-        logDebug("Planilha", "Criada nova aba Formulario", "");
-      }
-      
-      columnHeaders = [
-        "Data e Hora",
-        "Nome",
-        "WhatsApp",
-        "E-mail",
-        "Dificuldade",
-        "O que trouxe",
-        "Sessão Perfeita",
-        "O que impede",
-        "Investimento",
-        "Obstáculo",
-        "UTM Source",
-        "UTM Medium",
-        "UTM Campaign",
-        "UTM Term",
-        "UTM Content",
-        "URL da Página"
-      ];
-      
-      newRow = [
-        timestamp,
-        data.nome || "",
-        data.whats || "",
-        data.email || "",
-        data.dificuldade || "",
-        data.trouxe || "",
-        data.sessao_perfeita || "",
-        data.impede || "",
-        data.investir || "",
-        data.obstaculo || "",
-        data.utm_source || "",
-        data.utm_medium || "",
-        data.utm_campaign || "",
-        data.utm_term || "",
-        data.utm_content || "",
-        data.url || ""
-      ];
-      
-    } else {
-      logDebug("Roteamento", "Identificado como leads padrao", data.tipo || "sem tipo");
-      
-      sheet = spreadsheet.getSheetByName("Pagina de Captura");
-      if (!sheet) {
-        sheet = spreadsheet.insertSheet("Pagina de Captura");
-        logDebug("Planilha", "Criada nova aba Pagina de Captura", "");
-      }
-      
-      columnHeaders = [
-        "Data e Hora", 
-        "Nome", 
-        "E-mail", 
-        "WhatsApp", 
-        "UTM Source", 
-        "UTM Medium", 
-        "UTM Campaign", 
-        "UTM Term", 
-        "UTM Content", 
-        "URL da Página"
-      ];
-      
-      newRow = [
-        timestamp,
-        data.nome || "",
-        data.email || "",
-        data.whats || "",
-        data.utm_source || "",
-        data.utm_medium || "",
-        data.utm_campaign || "",
-        data.utm_term || "",
-        data.utm_content || "",
-        data.url || ""
-      ];
-    }
-    
-    // Se a aba estiver vazia, adiciona os cabeçalhos em negrito
+    // Se a primeira linha estiver em branco, insere os cabeçalhos
     if (sheet.getLastRow() === 0) {
       sheet.appendRow(columnHeaders);
+      
+      // Formata a linha de cabeçalho para ficar em negrito
       sheet.getRange(1, 1, 1, columnHeaders.length).setFontWeight("bold");
-      logDebug("Planilha", "Cabeçalhos adicionados", sheet.getName());
     }
     
-    // Salva a nova linha
-    sheet.appendRow(newRow);
-    logDebug("Sucesso", "Linha adicionada com sucesso", "Linha: " + sheet.getLastRow());
+    // Coleta a data e hora local
+    var timestamp = new Date();
     
+    // Prepara a nova linha com as informações
+    var newRow = [
+      timestamp,
+      data.nome || "",
+      data.email || "",
+      data.whats || "",
+      data.utm_source || "",
+      data.utm_medium || "",
+      data.utm_campaign || "",
+      data.utm_term || "",
+      data.utm_content || "",
+      data.url || ""
+    ];
+    
+    // Adiciona os dados na última linha disponível da planilha
+    sheet.appendRow(newRow);
+    
+    // Retorna resposta de sucesso para o site
     return ContentService.createTextOutput(JSON.stringify({ "status": "success", "rowAdded": sheet.getLastRow() }))
       .setMimeType(ContentService.MimeType.JSON)
       .setHeaders(headers);
       
   } catch (error) {
-    logDebug("Erro", "Erro ao executar doPost", error.toString());
-    
+    // Em caso de erro, grava no log e retorna a mensagem do erro
+    Logger.log("Erro: " + error.toString());
     return ContentService.createTextOutput(JSON.stringify({ "status": "error", "message": error.toString() }))
       .setMimeType(ContentService.MimeType.JSON)
       .setHeaders(headers);
   }
 }
 
+// Suporte para requisições de pre-flight (CORS Options) se o navegador exigir
 function doOptions(e) {
   var headers = {
     "Access-Control-Allow-Origin": "*",
@@ -151,5 +76,8 @@ function doOptions(e) {
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Max-Age": "86400"
   };
-  return ContentService.createTextOutput("").setMimeType(ContentService.MimeType.TEXT).setHeaders(headers);
+  
+  return ContentService.createTextOutput("")
+    .setMimeType(ContentService.MimeType.TEXT)
+    .setHeaders(headers);
 }
