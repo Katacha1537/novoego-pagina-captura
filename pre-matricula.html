@@ -1375,31 +1375,24 @@
 
       // Send to Google Sheets and wait for response before success screen
       let sendPromise;
-      try {
-        if (GOOGLE_SHEETS_URL) {
-          sendPromise = fetch(GOOGLE_SHEETS_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify(payload)
-          }).catch(err => {
-            console.error('Erro ao enviar:', err);
-            return null;
-          });
-        } else {
-          sendPromise = Promise.resolve();
-        }
-      } catch (err) {
-        console.error('Erro ao iniciar envio:', err);
-        sendPromise = Promise.resolve();
-      }
 
-      // Mostra a tela de sucesso após o envio concluir ou falhar
-      sendPromise.finally(() => {
+      // Enviar dados para o Google Sheets (se a URL estiver configurada)
+      if (GOOGLE_SHEETS_URL) {
+        fetch(GOOGLE_SHEETS_URL, {
+          method: 'POST',
+          mode: 'no-cors', // Evita erros de CORS no envio simples para o Apps Script
+          headers: {
+            'Content-Type': 'text/plain'
+          },
+          body: JSON.stringify(payload)
+        }).catch(err => console.error('Erro ao enviar dados para a planilha:', err));
+
         setTimeout(() => {
           goToStep(TOTAL_STEPS + 1);
         }, 200);
-      });
+      } else {
+        console.warn('URL do Google Sheets não configurada.');
+      }
     }
   </script>
 </body>
