@@ -1374,18 +1374,27 @@
       };
 
       // Send to Google Sheets and wait for response before success screen
-      let sendPromise = Promise.resolve();
-      if (GOOGLE_SHEETS_URL) {
-        sendPromise = fetch(GOOGLE_SHEETS_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          keepalive: true,
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify(payload)
-        }).catch(err => console.error('Erro ao enviar:', err));
+      let sendPromise;
+      try {
+        if (GOOGLE_SHEETS_URL) {
+          sendPromise = fetch(GOOGLE_SHEETS_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify(payload)
+          }).catch(err => {
+            console.error('Erro ao enviar:', err);
+            return null;
+          });
+        } else {
+          sendPromise = Promise.resolve();
+        }
+      } catch (err) {
+        console.error('Erro ao iniciar envio:', err);
+        sendPromise = Promise.resolve();
       }
 
-      // Mostra a tela de sucesso após o envio concluir
+      // Mostra a tela de sucesso após o envio concluir ou falhar
       sendPromise.finally(() => {
         setTimeout(() => {
           goToStep(TOTAL_STEPS + 1);
