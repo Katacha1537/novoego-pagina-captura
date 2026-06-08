@@ -1,22 +1,3 @@
-/**
- * enviar-dados.gs
- * 
- * INSTRUÇÕES DE INSTALAÇÃO E USO:
- * 1. Abra a planilha do Google Sheets onde você deseja salvar os leads.
- * 2. No menu superior, clique em "Extensões" e depois em "Apps Script".
- * 3. Substitua todo o código existente por este código completo.
- * 4. Clique em salvar (ícone de disquete) ou use Ctrl+S.
- * 5. Clique no botão "Implantar" (canto superior direito) > "Nova implantação".
- * 6. Em "Selecionar tipo", clique no ícone de engrenagem e selecione "App da Web".
- * 7. Configure a implantação:
- *    - Descrição: "Integração Página de Captura Leads"
- *    - Executar como: "Eu" (seu e-mail)
- *    - Quem tem acesso: "Qualquer pessoa" (MUITO IMPORTANTE para permitir que o site envie os dados sem autenticação)
- * 8. Clique em "Implantar". Se solicitado, clique em "Autorizar acesso", selecione sua conta do Google e depois clique em "Avançado" > "Acessar Projeto (não seguro)".
- * 9. Copie o URL do App da Web gerado (exemplo: https://script.google.com/macros/s/.../exec).
- * 10. Abra o arquivo "index.html" do seu site, vá na linha que possui a variável `GOOGLE_SHEETS_SCRIPT_URL` e cole a URL entre as aspas simples.
- */
-
 function doPost(e) {
   // Configuração de CORS para responder requisições do site
   var headers = {
@@ -25,75 +6,144 @@ function doPost(e) {
     "Access-Control-Allow-Headers": "Content-Type"
   };
   
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  
+  // FUNÇÃO AUXILIAR DE LOG (Cria uma aba Debug na planilha para capturar erros e requisições)
+  function logDebug(tag, message, details) {
+    try {
+      var debugSheet = spreadsheet.getSheetByName("Debug");
+      if (!debugSheet) {
+        debugSheet = spreadsheet.insertSheet("Debug");
+        debugSheet.appendRow(["Data e Hora", "Tag", "Mensagem", "Detalhes"]);
+        debugSheet.getRange(1, 1, 1, 4).setFontWeight("bold");
+      }
+      debugSheet.appendRow([new Date(), tag, message, details || ""]);
+    } catch (err) {}
+  }
+
   try {
-    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    var contents = e && e.postData ? e.postData.contents : null;
+    logDebug("Recebido", "Requisição recebida", contents);
     
-    // Direciona especificamente para a aba "Pagina de Captura"
-    var sheet = spreadsheet.getSheetByName("Pagina de Captura");
-    if (!sheet) {
-      sheet = spreadsheet.insertSheet("Pagina de Captura");
+    if (!contents) {
+      throw new Error("Corpo da requisição (postData) está vazio.");
     }
     
-    // Converte o corpo do POST (JSON string) para objeto JavaScript
-    var data = JSON.parse(e.postData.contents);
-    
-    // Cabeçalhos que serão criados automaticamente caso a planilha esteja vazia
-    var columnHeaders = [
-      "Data e Hora", 
-      "Nome", 
-      "E-mail", 
-      "WhatsApp", 
-      "UTM Source", 
-      "UTM Medium", 
-      "UTM Campaign", 
-      "UTM Term", 
-      "UTM Content", 
-      "URL da Página"
-    ];
-    
-    // Se a primeira linha estiver em branco, insere os cabeçalhos
-    if (sheet.getLastRow() === 0) {
-      sheet.appendRow(columnHeaders);
-      
-      // Formata a linha de cabeçalho para ficar em negrito
-      sheet.getRange(1, 1, 1, columnHeaders.length).setFontWeight("bold");
-    }
-    
-    // Coleta a data e hora local
+    var data = JSON.parse(contents);
     var timestamp = new Date();
     
-    // Prepara a nova linha com as informações
-    var newRow = [
-      timestamp,
-      data.nome || "",
-      data.email || "",
-      data.whats || "",
-      data.utm_source || "",
-      data.utm_medium || "",
-      data.utm_campaign || "",
-      data.utm_term || "",
-      data.utm_content || "",
-      data.url || ""
-    ];
+    var sheet;
+    var columnHeaders;
+    var newRow;
     
-    // Adiciona os dados na última linha disponível da planilha
+    // Roteamento inteligente baseado no tipo de formulário enviado
+    if (data.tipo === 'pre-matricula') {
+      logDebug("Roteamento", "Identificado como pre-matricula", data.tipo);
+      
+      sheet = spreadsheet.getSheetByName("Formulario");
+      if (!sheet) {
+        sheet = spreadsheet.insertSheet("Formulario");
+        logDebug("Planilha", "Criada nova aba Formulario", "");
+      }
+      
+      columnHeaders = [
+        "Data e Hora",
+        "Nome",
+        "WhatsApp",
+        "E-mail",
+        "Dificuldade",
+        "O que trouxe",
+        "Sessão Perfeita",
+        "O que impede",
+        "Investimento",
+        "Obstáculo",
+        "UTM Source",
+        "UTM Medium",
+        "UTM Campaign",
+        "UTM Term",
+        "UTM Content",
+        "URL da Página"
+      ];
+      
+      newRow = [
+        timestamp,
+        data.nome || "",
+        data.whats || "",
+        data.email || "",
+        data.dificuldade || "",
+        data.trouxe || "",
+        data.sessao_perfeita || "",
+        data.impede || "",
+        data.investir || "",
+        data.obstaculo || "",
+        data.utm_source || "",
+        data.utm_medium || "",
+        data.utm_campaign || "",
+        data.utm_term || "",
+        data.utm_content || "",
+        data.url || ""
+      ];
+      
+    } else {
+      logDebug("Roteamento", "Identificado como leads padrao", data.tipo || "sem tipo");
+      
+      sheet = spreadsheet.getSheetByName("Pagina de Captura");
+      if (!sheet) {
+        sheet = spreadsheet.insertSheet("Pagina de Captura");
+        logDebug("Planilha", "Criada nova aba Pagina de Captura", "");
+      }
+      
+      columnHeaders = [
+        "Data e Hora", 
+        "Nome", 
+        "E-mail", 
+        "WhatsApp", 
+        "UTM Source", 
+        "UTM Medium", 
+        "UTM Campaign", 
+        "UTM Term", 
+        "UTM Content", 
+        "URL da Página"
+      ];
+      
+      newRow = [
+        timestamp,
+        data.nome || "",
+        data.email || "",
+        data.whats || "",
+        data.utm_source || "",
+        data.utm_medium || "",
+        data.utm_campaign || "",
+        data.utm_term || "",
+        data.utm_content || "",
+        data.url || ""
+      ];
+    }
+    
+    // Se a aba estiver vazia, adiciona os cabeçalhos em negrito
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(columnHeaders);
+      sheet.getRange(1, 1, 1, columnHeaders.length).setFontWeight("bold");
+      logDebug("Planilha", "Cabeçalhos adicionados", sheet.getName());
+    }
+    
+    // Salva a nova linha
     sheet.appendRow(newRow);
+    logDebug("Sucesso", "Linha adicionada com sucesso", "Linha: " + sheet.getLastRow());
     
-    // Retorna resposta de sucesso para o site
     return ContentService.createTextOutput(JSON.stringify({ "status": "success", "rowAdded": sheet.getLastRow() }))
       .setMimeType(ContentService.MimeType.JSON)
       .setHeaders(headers);
       
   } catch (error) {
-    // Em caso de erro, grava no log e retorna a mensagem do erro
-    Logger.log("Erro: " + error.toString());
+    logDebug("Erro", "Erro ao executar doPost", error.toString());
+    
     return ContentService.createTextOutput(JSON.stringify({ "status": "error", "message": error.toString() }))
       .setMimeType(ContentService.MimeType.JSON)
       .setHeaders(headers);
   }
 }
 
-// Suporte para requisições de pre-flight (CORS Options) se o navegador exigir
 function doOptions(e) {
   var headers = {
     "Access-Control-Allow-Origin": "*",
@@ -101,8 +151,5 @@ function doOptions(e) {
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Max-Age": "86400"
   };
-  
-  return ContentService.createTextOutput("")
-    .setMimeType(ContentService.MimeType.TEXT)
-    .setHeaders(headers);
+  return ContentService.createTextOutput("").setMimeType(ContentService.MimeType.TEXT).setHeaders(headers);
 }
