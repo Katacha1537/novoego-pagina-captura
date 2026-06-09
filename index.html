@@ -8,6 +8,23 @@
   <link rel="icon" href="assets/monogram.svg">
   <link rel="stylesheet" href="styles.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1741236220359339');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1741236220359339&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
   <style>
     * {
       box-sizing: border-box;
@@ -835,6 +852,118 @@
       const form = document.getElementById('capture-form');
       const whatsappBtn = document.getElementById('whatsapp-btn');
       let redirectTimeout = null;
+      let contactEventFired = false;
+
+      // --- META PIXEL & CAPI TRACKING INTEGRATION ---
+      
+      // Helper to generate unique event_ids for deduplication
+      function generateEventId(prefix) {
+        return prefix + '_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      }
+
+      // Helper to retrieve cookie values
+      function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return null;
+      }
+
+      // Check and persist test_event_code from URL query parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlTestCode = urlParams.get('test_event_code');
+      if (urlTestCode) {
+        sessionStorage.setItem('meta_test_event_code', urlTestCode);
+      }
+      const testEventCode = sessionStorage.getItem('meta_test_event_code') || '';
+
+      const fbp = getCookie('_fbp') || '';
+      const fbc = getCookie('_fbc') || '';
+      
+      // Handle Click ID generation if fbclid is in the URL but cookie not set yet
+      let fbclid = urlParams.get('fbclid') || '';
+      let fbcValue = fbc;
+      if (!fbcValue && fbclid) {
+        fbcValue = `fb.1.${Date.now()}.${fbclid}`;
+      }
+
+      // Generic Meta tracking function (Browser Pixel + Server CAPI)
+      function trackMetaEvent(eventName, eventId, userData = {}, customData = {}) {
+        // 1. Browser-side (Pixel)
+        if (typeof fbq === 'function') {
+          fbq('track', eventName, customData, { eventID: eventId });
+        }
+
+        // 2. Server-side (Conversions API via Google Apps Script)
+        if (GOOGLE_SHEETS_SCRIPT_URL) {
+          const payload = {
+            action: "track_event",
+            event_name: eventName,
+            event_id: eventId,
+            url: window.location.href,
+            client_user_agent: navigator.userAgent,
+            fbp: fbp,
+            fbc: fbcValue,
+            test_event_code: testEventCode,
+            custom_data: customData,
+            ...userData
+          };
+
+          fetch(GOOGLE_SHEETS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+              'Content-Type': 'text/plain'
+            },
+            body: JSON.stringify(payload)
+          }).catch(err => console.error(`Erro ao enviar CAPI para o evento ${eventName}:`, err));
+        } else {
+          console.warn(`[CAPI] URL não configurada. Ignorado envio do evento: ${eventName}`);
+        }
+      }
+
+      // Helper to trigger the Contact event (WhatsApp button / Auto-redirect)
+      function triggerContactEvent() {
+        if (contactEventFired) return;
+        contactEventFired = true;
+
+        const nome = document.getElementById('nome')?.value || '';
+        const email = document.getElementById('email')?.value || '';
+        const whats = document.getElementById('whats')?.value || '';
+        
+        const contactEventId = generateEventId('co');
+        
+        trackMetaEvent('Contact', contactEventId, {
+          nome: nome,
+          email: email,
+          whats: whats
+        });
+      }
+
+      // A. ViewContent: Fired immediately on page load
+      const viewContentId = generateEventId('vc');
+      trackMetaEvent('ViewContent', viewContentId);
+
+      // B. InitiateCheckout: Fired when user first focuses on any form input
+      let initiateCheckoutFired = false;
+      const formInputs = [
+        document.getElementById('nome'),
+        document.getElementById('email'),
+        document.getElementById('whats')
+      ];
+      formInputs.forEach(input => {
+        if (input) {
+          input.addEventListener('focus', function () {
+            if (!initiateCheckoutFired) {
+              initiateCheckoutFired = true;
+              const checkoutEventId = generateEventId('ic');
+              trackMetaEvent('InitiateCheckout', checkoutEventId);
+            }
+          });
+        }
+      });
+
+      // --- END META INTEGRATION CONFIG ---
 
       if (form) {
         form.addEventListener('submit', function (e) {
@@ -846,14 +975,25 @@
           const whats = document.getElementById('whats').value;
 
           // Capturar parâmetros UTM da URL
-          const urlParams = new URLSearchParams(window.location.search);
           const utm_source = urlParams.get('utm_source') || '';
           const utm_medium = urlParams.get('utm_medium') || '';
           const utm_campaign = urlParams.get('utm_campaign') || '';
           const utm_term = urlParams.get('utm_term') || '';
           const utm_content = urlParams.get('utm_content') || '';
 
-          // Montar payload
+          // C. AddPaymentInfo, Lead, Purchase: Generate Event IDs for desubduplication
+          const apiEventId = generateEventId('api');
+          const ldEventId = generateEventId('ld');
+          const purEventId = generateEventId('pur');
+
+          // Trigger browser-side tracking for all 3 conversions
+          if (typeof fbq === 'function') {
+            fbq('track', 'AddPaymentInfo', {}, { eventID: apiEventId });
+            fbq('track', 'Lead', {}, { eventID: ldEventId });
+            fbq('track', 'Purchase', { currency: 'BRL', value: 0.00 }, { eventID: purEventId });
+          }
+
+          // Montar payload com dados do usuário e IDs de desduplicação
           const payload = {
             nome: nome,
             email: email,
@@ -863,7 +1003,14 @@
             utm_campaign: utm_campaign,
             utm_term: utm_term,
             utm_content: utm_content,
-            url: window.location.href
+            url: window.location.href,
+            client_user_agent: navigator.userAgent,
+            fbp: fbp,
+            fbc: fbcValue,
+            test_event_code: testEventCode,
+            lead_event_id: ldEventId,
+            add_payment_info_event_id: apiEventId,
+            purchase_event_id: purEventId
           };
 
           // Enviar dados para o Google Sheets (se a URL estiver configurada)
@@ -892,6 +1039,8 @@
 
           // Redirecionamento automático após 4 segundos (4000ms)
           redirectTimeout = setTimeout(function () {
+            // F. Contact: Trigger event upon automatic redirect
+            triggerContactEvent();
             window.location.href = WHATSAPP_URL;
           }, 4000);
         });
@@ -903,6 +1052,8 @@
           if (redirectTimeout) {
             clearTimeout(redirectTimeout);
           }
+          // F. Contact: Trigger event on manual click
+          triggerContactEvent();
         });
       }
     })();
