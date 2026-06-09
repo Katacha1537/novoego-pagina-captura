@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Novo Ego — Checklist + ChecklistItem
+ * Novo Ego, Checklist + ChecklistItem
  * Gold tick + sand text. Mirrors the "O que você vai receber" deliverable
  * lists. Ticks are circular, gold-outlined, with a sage check inside.
  */

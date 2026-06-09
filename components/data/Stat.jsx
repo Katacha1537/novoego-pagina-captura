@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Novo Ego — Stat
+ * Novo Ego, Stat
  * Big editorial number + quiet label. The brand states proof with restraint:
  * the figure carries the weight (serif, large), the label stays small + muted.
  */

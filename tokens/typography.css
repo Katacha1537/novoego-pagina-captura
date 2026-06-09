@@ -1,19 +1,19 @@
 /* ============================================================
-   Novo Ego — Typography tokens
+   Novo Ego, Typography tokens
    Three voices:
-     1. Statement  (Bodoni Moda)        — authority, drama, ALL-CAPS power lines
-     2. Editorial  (Cormorant Garamond) — humanity, sentence-case headings + italics
-     3. Functional (Hanken Grotesk)     — body, UI, eyebrows, captions
+     1. Statement  (Bodoni Moda)       , authority, drama, ALL-CAPS power lines
+     2. Editorial  (Cormorant Garamond), humanity, sentence-case headings + italics
+     3. Functional (Hanken Grotesk)    , body, UI, eyebrows, captions
    ============================================================ */
 
 :root {
-  /* — Families — */
+  /*, Families, */
   --font-statement: 'Bodoni Moda', 'Times New Roman', serif;
   --font-editorial: 'Cormorant Garamond', Georgia, serif;
   --font-sans:      'Hanken Grotesk', system-ui, -apple-system, sans-serif;
   --font-mono:      ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, monospace; /* dev/spec captions only */
 
-  /* — Type scale (fluid-friendly fixed steps, 1.25 major-third-ish) — */
+  /*, Type scale (fluid-friendly fixed steps, 1.25 major-third-ish), */
   --text-display:   clamp(3.25rem, 6vw, 5.5rem);   /* hero statements          */
   --text-h1:        clamp(2.5rem, 4.2vw, 3.75rem);
   --text-h2:        clamp(2rem, 3vw, 2.75rem);
@@ -25,19 +25,19 @@
   --text-eyebrow:   0.8125rem;  /* uppercase tracked labels                    */
   --text-caption:   0.75rem;
 
-  /* — Weights — */
+  /*, Weights, */
   --weight-light:   300;
   --weight-regular: 400;
   --weight-medium:  500;
   --weight-semibold:600;
   --weight-bold:    700;
 
-  /* — Line heights — */
+  /*, Line heights, */
   --leading-tight:  1.05;   /* display statements                              */
   --leading-snug:   1.18;   /* headings                                        */
   --leading-body:   1.65;   /* paragraphs                                      */
 
-  /* — Tracking — */
+  /*, Tracking, */
   --tracking-tight:  -0.02em;  /* large serif display                          */
   --tracking-normal: 0;
   --tracking-wide:   0.18em;   /* eyebrow / button labels                      */
@@ -111,7 +111,7 @@
   color: var(--text-dim);
 }
 
-/* Gilt text — the metallic sweep applied to type */
+/* Gilt text, the metallic sweep applied to type */
 .t-gold {
   background: var(--gradient-gold-text);
   -webkit-background-clip: text;

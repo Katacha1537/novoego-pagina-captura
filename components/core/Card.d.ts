@@ -11,6 +11,6 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 /**
  * The base dark surface for grouped content. `feature` for large headline
  * panels, `quote` for pull-quotes (gold left rule). Never stack a card on a
- * card — keep one elevation level per region.
+ * card, keep one elevation level per region.
  */
 export function Card(props: CardProps): JSX.Element;

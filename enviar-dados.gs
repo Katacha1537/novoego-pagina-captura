@@ -9,20 +9,13 @@
  * 5. Clique no botão "Implantar" (canto superior direito) > "Nova implantação".
  * 6. Em "Selecionar tipo", clique no ícone de engrenagem e selecione "App da Web".
  * 7. Configure a implantação:
- *    - Descrição: "Integração Form Novo Ego + Meta CAPI"
+ *    - Descrição: "Integração Form Novo Ego"
  *    - Executar como: "Eu" (seu e-mail)
  *    - Quem tem acesso: "Qualquer pessoa" (MUITO IMPORTANTE para permitir que o site envie os dados sem autenticação)
  * 8. Clique em "Implantar". Se solicitado, clique em "Autorizar acesso", selecione sua conta do Google e depois clique em "Avançado" > "Acessar Projeto sem título (não seguro)".
  * 9. Copie o URL do App da Web gerado (exemplo: https://script.google.com/macros/s/.../exec).
  * 10. Abra o arquivo "index.html" do seu site, vá na linha que possui a variável `GOOGLE_SHEETS_SCRIPT_URL` e cole a URL entre as aspas simples.
  */
-
-// ==========================================
-// CONFIGURAÇÕES DO META CONVERSIONS API
-// ==========================================
-var META_PIXEL_ID = "1741236220359339";
-var META_ACCESS_TOKEN = "EAAbFYZAJFPZC8BRiGUNVh83pY8UAHMOCZCQVw12CgfnClHMenIzZBbgVZCJWEHVUn3We0JezaphI2yoeixeAyoM1H85LVJ9faHmJwZBwZAxCf2XkZCgVLNKGiZAI4z5o1MH8z3Fgdd6ZAdK617cZBYyxkDDgrTWhK251Bp3nBIMp1Es3p2LEEbZBB8g8AZCvZBwINerAS1IwZDZD";
-var META_API_VERSION = "v19.0";
 
 function doPost(e) {
   // Configuração de CORS para responder requisições do site
@@ -33,6 +26,9 @@ function doPost(e) {
   };
   
   try {
+    // Captura a planilha ativa
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    
     // Converte o corpo do POST (JSON string) para objeto JavaScript
     var data = JSON.parse(e.postData.contents);
     

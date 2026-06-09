@@ -5,4 +5,4 @@ Big serif proof figure + muted label; group 3–4 in a row.
 <Stat value="7+" label="Anos de experiência" />
 ```
 
-Figure is pre-formatted text. `gilt` applies the metallic sweep — limit to one per row.
+Figure is pre-formatted text. `gilt` applies the metallic sweep, limit to one per row.

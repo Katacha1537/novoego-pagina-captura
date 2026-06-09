@@ -1,26 +1,26 @@
 /* ============================================================
-   Novo Ego — Elevation, borders, motion
+   Novo Ego, Elevation, borders, motion
    On dark UI, depth comes from: a hairline border + a soft cast
    shadow + a 1px top inner highlight that "catches light" like
    a polished surface. Gold gets a faint glow, used sparingly.
    ============================================================ */
 
 :root {
-  /* — Shadows (soft, warm-black, low spread) — */
+  /*, Shadows (soft, warm-black, low spread), */
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
   --shadow-md: 0 8px 24px -8px rgba(0,0,0,0.55);
   --shadow-lg: 0 24px 60px -18px rgba(0,0,0,0.65);
-  /* Inner top highlight — pair with a card border to fake a bevel */
+  /* Inner top highlight, pair with a card border to fake a bevel */
   --bevel-top: inset 0 1px 0 rgba(244,239,231,0.05);
   /* Composite card elevation */
   --elev-card: var(--bevel-top), var(--shadow-md);
   /* Gold glow for the primary CTA only */
   --glow-gold: 0 8px 30px -8px rgba(201,168,106,0.45);
 
-  /* — Border widths — */
+  /*, Border widths, */
   --hairline: 1px;
 
-  /* — Motion — slow, deliberate, expensive. No bounce. — */
+  /*, Motion, slow, deliberate, expensive. No bounce., */
   --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
   --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-fast:   160ms;

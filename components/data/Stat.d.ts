@@ -11,6 +11,6 @@ export interface StatProps {
 
 /**
  * A single proof figure. Group 3–4 in a row separated by hairline dividers.
- * Use gilt sparingly — at most one gilt stat in a row, as the hero number.
+ * Use gilt sparingly, at most one gilt stat in a row, as the hero number.
  */
 export function Stat(props: StatProps): JSX.Element;

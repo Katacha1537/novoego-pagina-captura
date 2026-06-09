@@ -1,4 +1,4 @@
-Brand CTA button — gilt primary, gold-outline secondary, quiet ghost; use one gilt button per view.
+Brand CTA button, gilt primary, gold-outline secondary, quiet ghost; use one gilt button per view.
 
 ```jsx
 <Button variant="primary" size="lg">Agende sua consulta</Button>
