@@ -974,25 +974,6 @@
       const viewContentId = generateEventId('vc');
       trackMetaEvent('ViewContent', viewContentId);
 
-      // B. InitiateCheckout: Fired when user first focuses on any form input
-      let initiateCheckoutFired = false;
-      const formInputs = [
-        document.getElementById('nome'),
-        document.getElementById('email'),
-        document.getElementById('whats')
-      ];
-      formInputs.forEach(input => {
-        if (input) {
-          input.addEventListener('focus', function () {
-            if (!initiateCheckoutFired) {
-              initiateCheckoutFired = true;
-              const checkoutEventId = generateEventId('ic');
-              trackMetaEvent('InitiateCheckout', checkoutEventId);
-            }
-          });
-        }
-      });
-
       // --- END META INTEGRATION CONFIG ---
 
       function showError(inputEl, message) {
@@ -1152,19 +1133,15 @@
           const utm_term = urlParams.get('utm_term') || '';
           const utm_content = urlParams.get('utm_content') || '';
 
-          // C. AddPaymentInfo, Lead, Purchase: Generate Event IDs for desubduplication
-          const apiEventId = generateEventId('api');
+          // C. Lead: Generate Event ID for deduplication
           const ldEventId = generateEventId('ld');
-          const purEventId = generateEventId('pur');
 
-          // Trigger browser-side tracking for all 3 conversions
+          // Trigger browser-side tracking for Lead conversion
           if (typeof fbq === 'function') {
-            fbq('track', 'AddPaymentInfo', {}, { eventID: apiEventId });
             fbq('track', 'Lead', {}, { eventID: ldEventId });
-            fbq('track', 'Purchase', { currency: 'BRL', value: 0.00 }, { eventID: purEventId });
           }
 
-          // Montar payload com dados do usuário e IDs de desduplicação
+          // Montar payload com dados do usuário e ID de desduplicação
           const payload = {
             tipo: 'pagina-captura',
             nome: nome,
@@ -1180,9 +1157,7 @@
             fbp: fbp,
             fbc: fbcValue,
             test_event_code: testEventCode,
-            lead_event_id: ldEventId,
-            add_payment_info_event_id: apiEventId,
-            purchase_event_id: purEventId
+            lead_event_id: ldEventId
           };
 
           // Enviar dados para o Google Sheets (se a URL estiver configurada)

@@ -112,18 +112,16 @@ function doPost(e) {
     sheet.appendRow(newRow);
     
     // --------------------------------------------------------
-    // Envio dos eventos do funil de conversão para o Meta CAPI
+    // Envio do evento de conversão para o Meta CAPI (apenas Lead)
     // --------------------------------------------------------
     var eventTime = Math.floor(timestamp.getTime() / 1000);
     var userData = buildUserData(data);
     var capiResults = {};
     
-    // IDs de desduplicação enviados do frontend ou gerados de fallback
+    // ID de desduplicação enviado do frontend ou gerados de fallback
     var leadEventId = data.lead_event_id || ("ld_" + timestamp.getTime() + "_" + Math.floor(Math.random() * 1000));
-    var addPaymentInfoEventId = data.add_payment_info_event_id || ("api_" + timestamp.getTime() + "_" + Math.floor(Math.random() * 1000));
-    var purchaseEventId = data.purchase_event_id || ("pur_" + timestamp.getTime() + "_" + Math.floor(Math.random() * 1000));
     
-    // 1. Enviar evento 'Lead'
+    // Enviar evento 'Lead'
     var leadEvent = {
       "event_name": "Lead",
       "event_time": eventTime,
@@ -133,32 +131,6 @@ function doPost(e) {
       "user_data": userData
     };
     capiResults.lead = sendCapiEvent(leadEvent, data.test_event_code);
-    
-    // 2. Enviar evento 'AddPaymentInfo'
-    var addPaymentInfoEvent = {
-      "event_name": "AddPaymentInfo",
-      "event_time": eventTime,
-      "event_id": addPaymentInfoEventId,
-      "event_source_url": data.url || "",
-      "action_source": "website",
-      "user_data": userData
-    };
-    capiResults.add_payment_info = sendCapiEvent(addPaymentInfoEvent, data.test_event_code);
-    
-    // 3. Enviar evento 'Purchase' (Compra gratuita)
-    var purchaseEvent = {
-      "event_name": "Purchase",
-      "event_time": eventTime,
-      "event_id": purchaseEventId,
-      "event_source_url": data.url || "",
-      "action_source": "website",
-      "user_data": userData,
-      "custom_data": {
-        "currency": "BRL",
-        "value": 0.00
-      }
-    };
-    capiResults.purchase = sendCapiEvent(purchaseEvent, data.test_event_code);
     
     // Retorna resposta de sucesso para o site
     return ContentService.createTextOutput(JSON.stringify({ 
