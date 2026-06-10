@@ -10,20 +10,22 @@
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <!-- Meta Pixel Code -->
   <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ?
+        n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+      };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+      n.queue = []; t = b.createElement(e); t.async = !0;
+      t.src = v; s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s)
+    }(window, document, 'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
     fbq('init', '1741236220359339');
     fbq('track', 'PageView');
   </script>
   <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=1741236220359339&ev=PageView&noscript=1"
-  /></noscript>
+      src="https://www.facebook.com/tr?id=1741236220359339&ev=PageView&noscript=1" /></noscript>
   <!-- End Meta Pixel Code -->
   <style>
     * {
@@ -718,6 +720,7 @@
         opacity: 0;
         transform: translateY(-4px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -787,7 +790,8 @@
           <p>Falta só um passo, e ele é o mais importante. O link da aula será liberado <b
               style="color:var(--text)">apenas no grupo do WhatsApp</b>. Se você não entrar agora, corre o risco real de
             perder a aula.</p>
-          <a class="btn primary full lg" href="https://chat.whatsapp.com/Gi6vO5QGq42CxCaLHCXwEd" id="whatsapp-btn"><i data-lucide="message-circle"></i> Entrar no grupo agora</a>
+          <a class="btn primary full lg" href="https://chat.whatsapp.com/Gi6vO5QGq42CxCaLHCXwEd" id="whatsapp-btn"><i
+              data-lucide="message-circle"></i> Entrar no grupo agora</a>
         </div>
       </div>
     </div>
@@ -874,7 +878,7 @@
     // ----- form behaviour & integration -----
     (function () {
       const WHATSAPP_URL = 'https://chat.whatsapp.com/Gi6vO5QGq42CxCaLHCXwEd';
-      const GOOGLE_SHEETS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzZPSGkXOriPOqZGz6zhxHITDK2bLAvkLpKfAH5eUKj8sM6kazrrySw_CDDnA1Jh0Q84Q/exec';
+      const GOOGLE_SHEETS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyJ4hv38T3Wpmy16PiZfkgEpmHFd2fyMypDfMR9tr5r7rXeuaXshg2NKipccjhKWY7PDA/exec';
 
       const form = document.getElementById('capture-form');
       const whatsappBtn = document.getElementById('whatsapp-btn');
@@ -885,7 +889,7 @@
       let contactEventFired = false;
 
       // --- META PIXEL & CAPI TRACKING INTEGRATION ---
-      
+
       // Helper to generate unique event_ids for deduplication
       function generateEventId(prefix) {
         return prefix + '_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
@@ -909,7 +913,7 @@
 
       const fbp = getCookie('_fbp') || '';
       const fbc = getCookie('_fbc') || '';
-      
+
       // Handle Click ID generation if fbclid is in the URL but cookie not set yet
       let fbclid = urlParams.get('fbclid') || '';
       let fbcValue = fbc;
@@ -960,9 +964,9 @@
         const nome = document.getElementById('nome')?.value || '';
         const email = document.getElementById('email')?.value || '';
         const whats = document.getElementById('whats')?.value || '';
-        
+
         const contactEventId = generateEventId('co');
-        
+
         trackMetaEvent('Contact', contactEventId, {
           nome: nome,
           email: email,
@@ -979,12 +983,12 @@
       function showError(inputEl, message) {
         inputEl.classList.add('error');
         removeError(inputEl);
-        
+
         const errorEl = document.createElement('div');
         errorEl.className = 'error-msg';
         errorEl.innerHTML = `<i data-lucide="alert-circle" style="width: 14px; height: 14px; flex-shrink: 0;"></i> <span>${message}</span>`;
         inputEl.parentNode.appendChild(errorEl);
-        
+
         if (window.lucide) {
           window.lucide.createIcons();
         }
@@ -1027,7 +1031,7 @@
           if (value.length > 11) {
             value = value.slice(0, 11);
           }
-          
+
           let formattedValue = '';
           if (value.length > 0) {
             formattedValue += '(' + value.slice(0, 2);
@@ -1038,7 +1042,7 @@
           if (value.length > 7) {
             formattedValue += '-' + value.slice(7, 11);
           }
-          
+
           if (value.length > 6) {
             if (value.length <= 10) {
               formattedValue = '(' + value.slice(0, 2) + ') ' + value.slice(2, 6) + '-' + value.slice(6);
@@ -1046,7 +1050,7 @@
               formattedValue = '(' + value.slice(0, 2) + ') ' + value.slice(2, 7) + '-' + value.slice(7, 11);
             }
           }
-          
+
           e.target.value = formattedValue;
 
           if (value.length >= 10 && value.length <= 11) {
@@ -1178,7 +1182,7 @@
           document.getElementById('form-live').classList.add('off');
           document.getElementById('form-success').classList.add('on');
           lucide.createIcons();
-          
+
           const formCard = document.getElementById('form');
           if (formCard && formCard.scrollIntoView) {
             formCard.scrollIntoView({ behavior: 'smooth' });
@@ -1229,17 +1233,17 @@
       const now = new Date();
       const dayOfWeek = now.getDay();
       let daysToAdd = (1 - dayOfWeek + 7) % 7;
-      
+
       // Se for segunda-feira e já passar das 20h, agenda para a próxima segunda
       if (dayOfWeek === 1 && now.getHours() >= 20) {
         daysToAdd = 7;
       }
-      
+
       const targetDate = new Date();
       targetDate.setDate(now.getDate() + daysToAdd);
       const isToday = daysToAdd === 0;
       const day = String(targetDate.getDate()).padStart(2, '0');
-      
+
       if (isToday) {
         const month = String(targetDate.getMonth() + 1).padStart(2, '0');
         return `hoje, dia ${day}/${month}`;
@@ -1265,11 +1269,11 @@
       const ang = ANGLES[t.angulo] || ANGLES['Ângulo 2, virada de chave'];
       document.getElementById('headline').innerHTML = ang.h;
       document.getElementById('subheadline').textContent = ang.s;
-      
+
       const resolvedDate = t.data === 'auto' ? getNextMondayDate() : t.data;
       document.getElementById('badge-text').textContent = 'Aula gratuita · ' + resolvedDate + ' às ' + t.horario;
       document.getElementById('when-text').textContent = 'Aula online e gratuita · ' + resolvedDate + ' às ' + t.horario;
-      
+
       const bioName = document.getElementById('bio-name');
       const bioCred = document.getElementById('bio-cred');
       const bioYears = document.getElementById('bio-years');

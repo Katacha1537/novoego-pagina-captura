@@ -35,7 +35,7 @@ function doPost(e) {
     // ========================================================
     // CASO 1: APENAS RASTREAMENTO DE EVENTOS ISOLADOS (CAPI)
     // ========================================================
-    if (data.action === "track_event") {
+    if (data.action === "track_event" || data.event_name) {
       var eventTime = Math.floor(new Date().getTime() / 1000);
       var eventData = {
         "event_name": data.event_name,
