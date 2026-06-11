@@ -17,6 +17,11 @@
  * 10. Abra o arquivo "index.html" do seu site, vá na linha que possui a variável `GOOGLE_SHEETS_SCRIPT_URL` e cole a URL entre as aspas simples.
  */
 
+// Configurações do Meta (API de Conversões e Pixel)
+var META_API_VERSION = "v19.0";
+var META_PIXEL_ID = "2334281450712212";
+var META_ACCESS_TOKEN = "EAAbFYZAJFPZC8BRu9V6stijR0yMVlhktzJqXsgPM3MlfPveSjAHpjNW5z8dZBM94dFr2kGy3mL1RawKqrrfaQlZCOPqfZCLbmYqr8zf38lFVECbn2WIpYZCRKjta8wkAZCRLfn8cUbVtLGWVlFhq973hs9707NlTxZA16G1bX86oNcciU1l299LOEZCDGTSzrQZCZA1LwZDZD";
+
 function doPost(e) {
   // Configuração de CORS para responder requisições do site
   var headers = {
