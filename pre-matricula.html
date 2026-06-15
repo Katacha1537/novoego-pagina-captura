@@ -1110,26 +1110,38 @@
         status: 'parcial'
       };
 
-      fetch(GOOGLE_SHEETS_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'text/plain'
-        },
-        body: JSON.stringify(payload)
-      }).catch(err => console.error('Erro ao enviar dados parciais para a planilha:', err));
+      const payloadStr = JSON.stringify(payload);
+
+      // Usar sendBeacon (ideal para beforeunload — sobrevive ao fechamento da página)
+      if (navigator.sendBeacon) {
+        const blob = new Blob([payloadStr], { type: 'text/plain' });
+        navigator.sendBeacon(GOOGLE_SHEETS_URL, blob);
+      } else {
+        fetch(GOOGLE_SHEETS_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: payloadStr,
+          keepalive: true
+        }).catch(err => console.error('Erro ao enviar dados parciais para a planilha:', err));
+      }
     }
+
+    // ── Safety net: enviar dados parciais se o usuário fechar/sair da página ──
+    // (NÃO a cada etapa, para evitar duplicatas na planilha)
+    // O envio principal acontece apenas no submitForm() (etapa final)
+    let formSubmitted = false;
+    window.addEventListener('beforeunload', function () {
+      if (!formSubmitted && currentStep >= 1) {
+        sendPartialToWebhook();
+      }
+    });
 
     // ── Step navigation ──
     function goToStep(step) {
       const current = document.getElementById('step-' + currentStep);
       const next = document.getElementById('step-' + step);
       const success = document.getElementById('success-card');
-
-      // Envia os dados acumulados para o webhook caso o usuário esteja avançando de etapa
-      if (step > currentStep && currentStep > 0 && currentStep <= TOTAL_STEPS) {
-        sendPartialToWebhook();
-      }
 
       if (!next && step > TOTAL_STEPS) {
         // Remove active/leaving de todos os steps para evitar bugs visuais
@@ -1383,6 +1395,9 @@
     function submitForm() {
       if (!validateStep(currentStep)) return;
 
+      // Marcar como enviado para evitar envio duplicado pelo beforeunload
+      formSubmitted = true;
+
       const submitBtn = document.getElementById('submit-btn');
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i data-lucide="loader-2" style="animation: spin 1s linear infinite;"></i> Enviando...';
@@ -1435,14 +1450,25 @@
 
       // Enviar dados para o Google Sheets (se a URL estiver configurada)
       if (GOOGLE_SHEETS_URL) {
-        fetch(GOOGLE_SHEETS_URL, {
-          method: 'POST',
-          mode: 'no-cors', // Evita erros de CORS no envio simples para o Apps Script
-          headers: {
-            'Content-Type': 'text/plain'
-          },
-          body: JSON.stringify(payload)
-        }).catch(err => console.error('Erro ao enviar dados para a planilha:', err));
+        const payloadStr = JSON.stringify(payload);
+
+        // sendBeacon como método primário (sobrevive a redirects)
+        let sent = false;
+        if (navigator.sendBeacon) {
+          const blob = new Blob([payloadStr], { type: 'text/plain' });
+          sent = navigator.sendBeacon(GOOGLE_SHEETS_URL, blob);
+        }
+
+        // fetch como fallback com keepalive
+        if (!sent) {
+          fetch(GOOGLE_SHEETS_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain' },
+            body: payloadStr,
+            keepalive: true
+          }).catch(err => console.error('Erro ao enviar dados para a planilha:', err));
+        }
 
         setTimeout(() => {
           goToStep(TOTAL_STEPS + 1);
