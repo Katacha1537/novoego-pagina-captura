@@ -943,14 +943,25 @@
             ...userData
           };
 
-          fetch(GOOGLE_SHEETS_SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: {
-              'Content-Type': 'text/plain'
-            },
-            body: JSON.stringify(payload)
-          }).catch(err => console.error(`Erro ao enviar CAPI para o evento ${eventName}:`, err));
+          const payloadStr = JSON.stringify(payload);
+
+          // sendBeacon como método primário (sobrevive a navegação)
+          let sent = false;
+          if (navigator.sendBeacon) {
+            const blob = new Blob([payloadStr], { type: 'text/plain' });
+            sent = navigator.sendBeacon(GOOGLE_SHEETS_SCRIPT_URL, blob);
+          }
+
+          // fetch como fallback com keepalive
+          if (!sent) {
+            fetch(GOOGLE_SHEETS_SCRIPT_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'text/plain' },
+              body: payloadStr,
+              keepalive: true
+            }).catch(err => console.error(`Erro ao enviar CAPI para o evento ${eventName}:`, err));
+          }
         } else {
           console.warn(`[CAPI] URL não configurada. Ignorado envio do evento: ${eventName}`);
         }
@@ -1165,15 +1176,44 @@
           };
 
           // Enviar dados para o Google Sheets (se a URL estiver configurada)
+          let dataSent = false;
+
           if (GOOGLE_SHEETS_SCRIPT_URL) {
-            fetch(GOOGLE_SHEETS_SCRIPT_URL, {
-              method: 'POST',
-              mode: 'no-cors', // Evita erros de CORS no envio simples para o Apps Script
-              headers: {
-                'Content-Type': 'text/plain'
-              },
-              body: JSON.stringify(payload)
-            }).catch(err => console.error('Erro ao enviar dados para a planilha:', err));
+            const payloadStr = JSON.stringify(payload);
+
+            // 1. sendBeacon — sobrevive a redirects e fechamento de aba
+            //    É a forma mais confiável de enviar dados quando a página vai mudar
+            if (navigator.sendBeacon) {
+              const blob = new Blob([payloadStr], { type: 'text/plain' });
+              dataSent = navigator.sendBeacon(GOOGLE_SHEETS_SCRIPT_URL, blob);
+              if (dataSent) {
+                console.log('[Formulário] Dados enviados via sendBeacon com sucesso.');
+              }
+            }
+
+            // 2. fetch como backup — caso sendBeacon falhe ou não esteja disponível
+            if (!dataSent) {
+              fetch(GOOGLE_SHEETS_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain' },
+                body: payloadStr,
+                keepalive: true // Mantém a requisição ativa mesmo após navegação
+              })
+              .then(function() {
+                dataSent = true;
+                console.log('[Formulário] Dados enviados via fetch com sucesso.');
+              })
+              .catch(function(err) {
+                console.error('[Formulário] Erro ao enviar dados:', err);
+                // Tentativa final de retry com sendBeacon
+                if (navigator.sendBeacon) {
+                  var blob = new Blob([payloadStr], { type: 'text/plain' });
+                  navigator.sendBeacon(GOOGLE_SHEETS_SCRIPT_URL, blob);
+                  console.log('[Formulário] Retry via sendBeacon enviado.');
+                }
+              });
+            }
           } else {
             console.warn('URL do Google Sheets não configurada.');
           }
@@ -1188,12 +1228,14 @@
             formCard.scrollIntoView({ behavior: 'smooth' });
           }
 
-          // Redirecionamento automático após 4 segundos (4000ms)
+          // Redirecionamento automático após 6 segundos (6000ms)
+          // Tempo maior para garantir que o envio dos dados seja concluído,
+          // especialmente durante cold starts do Google Apps Script
           redirectTimeout = setTimeout(function () {
             // F. Contact: Trigger event upon automatic redirect
             triggerContactEvent();
             window.location.href = WHATSAPP_URL;
-          }, 4000);
+          }, 6000);
         });
       }
 
