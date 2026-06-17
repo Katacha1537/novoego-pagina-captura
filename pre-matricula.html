@@ -982,27 +982,47 @@
     // ── Init Lucide ──
     lucide.createIcons();
 
-    // ── WhatsApp mask ──
+    // ── WhatsApp mask (supports optional DDI 55) ──
     const whatsInput = document.getElementById('pm-whats');
     if (whatsInput) {
       whatsInput.addEventListener('input', function (e) {
         let value = e.target.value.replace(/\D/g, '');
-        if (value.length > 11) value = value.slice(0, 11);
 
-        let formatted = '';
-        if (value.length > 0) formatted += '(' + value.slice(0, 2);
-        if (value.length > 2) formatted += ') ';
-        if (value.length > 6) {
-          if (value.length <= 10) {
-            formatted += value.slice(2, 6) + '-' + value.slice(6);
-          } else {
-            formatted += value.slice(2, 7) + '-' + value.slice(7, 11);
+        // Detect if DDI 55 is present
+        const hasDDI = value.length > 11 && value.startsWith('55');
+
+        if (hasDDI) {
+          if (value.length > 13) value = value.slice(0, 13);
+          const local = value.slice(2); // remove 55
+          let formatted = '+55 ';
+          if (local.length > 0) formatted += '(' + local.slice(0, 2);
+          if (local.length > 2) formatted += ') ';
+          if (local.length > 6) {
+            if (local.length <= 10) {
+              formatted += local.slice(2, 6) + '-' + local.slice(6);
+            } else {
+              formatted += local.slice(2, 7) + '-' + local.slice(7, 11);
+            }
+          } else if (local.length > 2) {
+            formatted += local.slice(2);
           }
-        } else if (value.length > 2) {
-          formatted += value.slice(2);
+          e.target.value = formatted;
+        } else {
+          if (value.length > 11) value = value.slice(0, 11);
+          let formatted = '';
+          if (value.length > 0) formatted += '(' + value.slice(0, 2);
+          if (value.length > 2) formatted += ') ';
+          if (value.length > 6) {
+            if (value.length <= 10) {
+              formatted += value.slice(2, 6) + '-' + value.slice(6);
+            } else {
+              formatted += value.slice(2, 7) + '-' + value.slice(7, 11);
+            }
+          } else if (value.length > 2) {
+            formatted += value.slice(2);
+          }
+          e.target.value = formatted;
         }
-
-        e.target.value = formatted;
       });
     }
 
@@ -1270,7 +1290,7 @@
           showError(whats, 'O WhatsApp é obrigatório.');
           valid = false;
           if (!firstInvalid) firstInvalid = whats;
-        } else if (digits.length < 10 || digits.length > 11) {
+        } else if (digits.length < 10 || digits.length > 13) {
           showError(whats, 'Insira um WhatsApp válido com DDD.');
           valid = false;
           if (!firstInvalid) firstInvalid = whats;
@@ -1445,30 +1465,15 @@
         status: 'final'
       };
 
-      // Send to Google Sheets and wait for response before success screen
-      let sendPromise;
-
       // Enviar dados para o Google Sheets (se a URL estiver configurada)
       if (GOOGLE_SHEETS_URL) {
-        const payloadStr = JSON.stringify(payload);
-
-        // sendBeacon como método primário (sobrevive a redirects)
-        let sent = false;
-        if (navigator.sendBeacon) {
-          const blob = new Blob([payloadStr], { type: 'text/plain' });
-          sent = navigator.sendBeacon(GOOGLE_SHEETS_URL, blob);
-        }
-
-        // fetch como fallback com keepalive
-        if (!sent) {
-          fetch(GOOGLE_SHEETS_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'text/plain' },
-            body: payloadStr,
-            keepalive: true
-          }).catch(err => console.error('Erro ao enviar dados para a planilha:', err));
-        }
+        fetch(GOOGLE_SHEETS_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify(payload),
+          keepalive: true
+        }).catch(err => console.error('Erro ao enviar dados para a planilha:', err));
 
         setTimeout(() => {
           goToStep(TOTAL_STEPS + 1);

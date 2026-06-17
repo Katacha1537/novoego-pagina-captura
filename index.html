@@ -943,25 +943,13 @@
             ...userData
           };
 
-          const payloadStr = JSON.stringify(payload);
-
-          // sendBeacon como método primário (sobrevive a navegação)
-          let sent = false;
-          if (navigator.sendBeacon) {
-            const blob = new Blob([payloadStr], { type: 'text/plain' });
-            sent = navigator.sendBeacon(GOOGLE_SHEETS_SCRIPT_URL, blob);
-          }
-
-          // fetch como fallback com keepalive
-          if (!sent) {
-            fetch(GOOGLE_SHEETS_SCRIPT_URL, {
-              method: 'POST',
-              mode: 'no-cors',
-              headers: { 'Content-Type': 'text/plain' },
-              body: payloadStr,
-              keepalive: true
-            }).catch(err => console.error(`Erro ao enviar CAPI para o evento ${eventName}:`, err));
-          }
+          fetch(GOOGLE_SHEETS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify(payload),
+            keepalive: true
+          }).catch(err => console.error(`Erro ao enviar CAPI para o evento ${eventName}:`, err));
         } else {
           console.warn(`[CAPI] URL não configurada. Ignorado envio do evento: ${eventName}`);
         }
@@ -1035,36 +1023,49 @@
         });
       }
 
-      // WhatsApp input masking & error clearance
+      // WhatsApp input masking & error clearance (supports optional DDI 55)
       if (whatsInput) {
         whatsInput.addEventListener('input', function (e) {
           let value = e.target.value.replace(/\D/g, '');
-          if (value.length > 11) {
-            value = value.slice(0, 11);
-          }
 
-          let formattedValue = '';
-          if (value.length > 0) {
-            formattedValue += '(' + value.slice(0, 2);
-          }
-          if (value.length > 2) {
-            formattedValue += ') ' + value.slice(2, 7);
-          }
-          if (value.length > 7) {
-            formattedValue += '-' + value.slice(7, 11);
-          }
+          // Detect if DDI 55 is present
+          const hasDDI = value.length > 11 && value.startsWith('55');
 
-          if (value.length > 6) {
-            if (value.length <= 10) {
-              formattedValue = '(' + value.slice(0, 2) + ') ' + value.slice(2, 6) + '-' + value.slice(6);
-            } else {
-              formattedValue = '(' + value.slice(0, 2) + ') ' + value.slice(2, 7) + '-' + value.slice(7, 11);
+          if (hasDDI) {
+            if (value.length > 13) value = value.slice(0, 13);
+            const local = value.slice(2); // remove 55
+            let formattedValue = '+55 ';
+            if (local.length > 0) formattedValue += '(' + local.slice(0, 2);
+            if (local.length > 2) formattedValue += ') ';
+            if (local.length > 6) {
+              if (local.length <= 10) {
+                formattedValue += local.slice(2, 6) + '-' + local.slice(6);
+              } else {
+                formattedValue += local.slice(2, 7) + '-' + local.slice(7, 11);
+              }
+            } else if (local.length > 2) {
+              formattedValue += local.slice(2);
             }
+            e.target.value = formattedValue;
+          } else {
+            if (value.length > 11) value = value.slice(0, 11);
+            let formattedValue = '';
+            if (value.length > 0) formattedValue += '(' + value.slice(0, 2);
+            if (value.length > 2) formattedValue += ') ';
+            if (value.length > 6) {
+              if (value.length <= 10) {
+                formattedValue += value.slice(2, 6) + '-' + value.slice(6);
+              } else {
+                formattedValue += value.slice(2, 7) + '-' + value.slice(7, 11);
+              }
+            } else if (value.length > 2) {
+              formattedValue += value.slice(2);
+            }
+            e.target.value = formattedValue;
           }
 
-          e.target.value = formattedValue;
-
-          if (value.length >= 10 && value.length <= 11) {
+          const totalDigits = value.length;
+          if ((totalDigits >= 10 && totalDigits <= 11) || (totalDigits >= 12 && totalDigits <= 13)) {
             removeError(whatsInput);
           }
         });
@@ -1121,7 +1122,7 @@
               showError(whatsInput, 'O WhatsApp é obrigatório.');
               isValid = false;
               if (!firstInvalidInput) firstInvalidInput = whatsInput;
-            } else if (digits.length < 10 || digits.length > 11) {
+            } else if (digits.length < 10 || digits.length > 13) {
               showError(whatsInput, 'Por favor, insira um WhatsApp válido com DDD (10 ou 11 dígitos).');
               isValid = false;
               if (!firstInvalidInput) firstInvalidInput = whatsInput;
@@ -1176,44 +1177,14 @@
           };
 
           // Enviar dados para o Google Sheets (se a URL estiver configurada)
-          let dataSent = false;
-
           if (GOOGLE_SHEETS_SCRIPT_URL) {
-            const payloadStr = JSON.stringify(payload);
-
-            // 1. sendBeacon — sobrevive a redirects e fechamento de aba
-            //    É a forma mais confiável de enviar dados quando a página vai mudar
-            if (navigator.sendBeacon) {
-              const blob = new Blob([payloadStr], { type: 'text/plain' });
-              dataSent = navigator.sendBeacon(GOOGLE_SHEETS_SCRIPT_URL, blob);
-              if (dataSent) {
-                console.log('[Formulário] Dados enviados via sendBeacon com sucesso.');
-              }
-            }
-
-            // 2. fetch como backup — caso sendBeacon falhe ou não esteja disponível
-            if (!dataSent) {
-              fetch(GOOGLE_SHEETS_SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain' },
-                body: payloadStr,
-                keepalive: true // Mantém a requisição ativa mesmo após navegação
-              })
-              .then(function() {
-                dataSent = true;
-                console.log('[Formulário] Dados enviados via fetch com sucesso.');
-              })
-              .catch(function(err) {
-                console.error('[Formulário] Erro ao enviar dados:', err);
-                // Tentativa final de retry com sendBeacon
-                if (navigator.sendBeacon) {
-                  var blob = new Blob([payloadStr], { type: 'text/plain' });
-                  navigator.sendBeacon(GOOGLE_SHEETS_SCRIPT_URL, blob);
-                  console.log('[Formulário] Retry via sendBeacon enviado.');
-                }
-              });
-            }
+            fetch(GOOGLE_SHEETS_SCRIPT_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'text/plain' },
+              body: JSON.stringify(payload),
+              keepalive: true
+            }).catch(err => console.error('Erro ao enviar dados para a planilha:', err));
           } else {
             console.warn('URL do Google Sheets não configurada.');
           }
